@@ -1,28 +1,17 @@
 .app {
     display: flex;
-}
-
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    height: 100vh;
-    display: flex;
     flex-direction: column;
-    padding: 10px;
+    height: 100vh;
 }
 
-.sidebar a {
-    color: white;
-    padding: 10px;
-    text-decoration: none;
-}
-
-.sidebar a:hover {
-    background-color: #555;
+.main-content {
+    display: flex;
+    flex: 1;
 }
 
 .content {
     flex: 1;
     padding: 20px;
+    overflow: auto;
 }
+

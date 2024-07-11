@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {BrowserRouter,Route,Routes} from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Home from "./components/Home";
@@ -7,15 +7,22 @@ import Processing from "./components/Processing";
 import SalesInquiry from "./components/SalesInquiry";
 import ReservationStatus from "./components/ReservationStatus";
 import StoreSettings from "./components/StoreSettings";
+import TopBar from "./components/TopBar";
 import "./App.css";
 
 
-function App() {
+const App =()=> {
+    const [status,setSatus] = useState('준비중');
+    const toggleStatus =()=>{
+        setSatus((prevState)=>(prevState ==='준비중' ? '영업중' : '준비중'));
+    };
   return (
       <BrowserRouter>
           <div className={"app"}>
-              <Sidebar/>
-              <div className={"content"}>
+              <TopBar status={status}/>
+              <div className={"main-content"}>
+              <Sidebar status={status} toggleStatus={toggleStatus}/>
+                <div className={"content"}>
                   <Routes>
                       <Route path={"/"} element={<Home/>}/>
                       <Route path={"/processing"} element={<Processing/>}/>
@@ -24,6 +31,7 @@ function App() {
                       <Route path={"/store-setting"} element={<StoreSettings/>}/>
                       <Route path={"/close-store"} element={<CloseStore/>}/>
                   </Routes>
+                </div>
               </div>
           </div>
       </BrowserRouter>
