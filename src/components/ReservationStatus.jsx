@@ -16,6 +16,8 @@ const ReservationStatus = () => {
                     {title: '예약1', date: '2024-07-13'},
                     {title: '예약2', date: '2024-07-13'}
                 ]}
+                height={700}
+                contentHeight={600}
             />
             </div>
         </div>
