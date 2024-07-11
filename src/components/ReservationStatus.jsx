@@ -1,9 +1,25 @@
-import React from "react";
+import React from 'react';
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import "../scss/ReservationStatus.css"
 
 const ReservationStatus = () => {
-  return(
-      <div>예약현황</div>
-  )
-}
+    return (
+        <div className="reservation-status">
+            <h1>예약 현황</h1>
+            <div className={"calendar-container"}>
+            <FullCalendar
+                plugins={[dayGridPlugin]}
+                initialView={"dayGridMonth"}
+                weekends={true}
+                events={[
+                    {title: '예약1', date: '2024-07-13'},
+                    {title: '예약2', date: '2024-07-13'}
+                ]}
+            />
+            </div>
+        </div>
+    );
+};
 
 export default ReservationStatus;

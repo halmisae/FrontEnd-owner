@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import icon1 from "./assets/power.png";
 import icon2 from "./assets/processing.png";
 import icon3 from "./assets/reservationstatus.png";
@@ -9,6 +9,7 @@ import "./Sidebar.css"
 
 const Sidebar = ({status, toggleStatus}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleToggle =()=>{
         setIsModalOpen(true);
@@ -21,7 +22,12 @@ const Sidebar = ({status, toggleStatus}) => {
     const handleConfirmAction =()=>{
         toggleStatus();
         setIsModalOpen(false);
-    }
+        if (status === '영업중'){
+            navigate("/");
+        } else {
+            navigate("/processing");
+        }
+    };
   return(
       <div className={"sidebar"}>
           <Link to={"/processing"}><img src={icon2} alt={"처리중"}/><span>처리중</span></Link>
