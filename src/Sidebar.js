@@ -41,16 +41,18 @@ const Sidebar = ({status, toggleStatus}) => {
               <span>{status === '영업중' ? '영업종료' : '영업시작'}</span>
           </button>
           </div>
-          <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-              <p className={"status-check"}>{status === '영업중' ? '영업을 종료하시겠습니까?' : '영업을 시작하시겠습니까?'}</p>
-              <p className={"status-index"}>{status === '영업중' ? '처리중인 예악이 남아있을 경우 전부 취소처리 됩니다' : ''}</p>
-              <div className={"modal-buttons"}>
-                  <button className={"modal-button"} onClick={handleConfirmAction}>
-                      {status === '영업중' ? '영업종료하기' : '영업시작하기'}
-                  </button>
-                  <button className={"modal-button"} onClick={handleCloseModal}>취소</button>
-              </div>
-          </Modal>
+          {isModalOpen &&(
+              <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                  <p className={"status-check"}>{status === '영업중' ? '영업을 종료하시겠습니까?' : '영업을 시작하시겠습니까?'}</p>
+                  <p className={"status-index"}>{status === '영업중' ? '처리중인 예악이 남아있을 경우 전부 취소처리 됩니다' : ''}</p>
+                  <div className={"modal-buttons"}>
+                      <button className={"modal-button"} onClick={handleConfirmAction}>
+                          {status === '영업중' ? '영업종료하기' : '영업시작하기'}
+                      </button>
+                      <button className={"modal-button"} onClick={handleCloseModal}>취소</button>
+                  </div>
+              </Modal>
+          )}
       </div>
   )
 }
