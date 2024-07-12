@@ -1,12 +1,12 @@
 import React,{useState}from "react";
 import "../scss/StoreAccording.css"
 
-const StoreAccording = ({title,icon,children,isClickable = true}) =>{
-    const [isOpen, setIsOpen] = useState(false);
+const StoreAccording = ({title,icon,children,isCollapsible, alwaysVisible}) =>{
+    const [isOpen, setIsOpen] = useState(alwaysVisible);
 
     const toggleAction  =()=>{
-        if (isClickable){
-            setIsOpen(!isOpen);
+        if (isCollapsible){
+            setIsOpen(prevState => !prevState);
         }
     };
 
@@ -16,7 +16,7 @@ const StoreAccording = ({title,icon,children,isClickable = true}) =>{
                 <span className={"icon"}>{icon}</span>
                 {title}
             </button>
-            {isOpen && <div className={"according-content"}>{children}</div>}
+            {(isOpen || alwaysVisible)&& (<div className={"according-content"}>{children}</div>)}
         </div>
     )
 };

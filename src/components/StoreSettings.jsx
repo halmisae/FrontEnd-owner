@@ -16,17 +16,17 @@ const StoreSettings = () => {
 
   return(
       <div className={"store-setting"}>
-        <StoreAccording icon={<img src={icon4} alt={"가게설정"} className={"accordion-icon"}/>} title={"가게 설정"} isClickable={false}>
+        <StoreAccording icon={<img src={icon4} alt={"가게설정"} className={"accordion-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
         </StoreAccording>
-        <StoreAccording icon={<img src={icon3} alt={"정보수정"} className={"accordion-icon"}/>} title={"정보수정"}>
+        <StoreAccording icon={<img src={icon3} alt={"정보수정"} className={"accordion-icon"}/>} title={"정보수정"} isCollapsible alwaysVisible={false}>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/owner-info")}>업주 정보수정</button>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/store-info")}>가게 정보수정</button>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/withdraw")}>회원탈퇴</button>
         </StoreAccording>
-        <StoreAccording icon={<img src={icon1} alt={"가게 메뉴관리"} className={"accordion-icon"}/>} title={"가게 메뉴관리"}>
+        <StoreAccording icon={<img src={icon1} alt={"가게 메뉴관리"} className={"accordion-icon"}/>} title={"가게 메뉴관리"} isCollapsible alwaysVisible={false}>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/menu-list")}>메뉴 목록보기</button>
         </StoreAccording>
-        <StoreAccording icon={<img src={icon2} alt={"할인 및 위약금관리"} className={"accordion-icon"}/>} title={"할인 및 위약금관리"}>
+        <StoreAccording icon={<img src={icon2} alt={"할인 및 위약금관리"} className={"accordion-icon"}/>} title={"할인 및 위약금관리"} isCollapsible alwaysVisible={false}>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/reservation-discount")}>예약 할인설정</button>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/usage-time-discount")}>이용시간 할인설정</button>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/closing-discount")}>마감할인 상품등록 및 설정</button>
