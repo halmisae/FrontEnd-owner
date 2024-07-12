@@ -30,6 +30,7 @@ const Sidebar = ({status, toggleStatus}) => {
     };
   return(
       <div className={"sidebar"}>
+          <div className={"sidebar-content"}>
           <Link to={"/processing"}><img src={icon2} alt={"처리중"}/><span>처리중</span></Link>
           <Link to={"/reservation-status"}><img src={icon3} alt={"예약현황"}/><span>예약현황</span></Link>
           <Link to={"/sales-inquiry"}><img src={icon4} alt={"매출조회"}/><span>매출조회</span></Link>
@@ -50,6 +51,7 @@ const Sidebar = ({status, toggleStatus}) => {
                   </div>
               </div>
           )}
+          </div>
       </div>
   )
 }
