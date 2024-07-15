@@ -4,6 +4,7 @@
 }
 
 .according-title {
+    position: relative;
     background-color: #eee;
     border: none;
     outline: none;
@@ -24,8 +25,8 @@
 }
 
 .according-title .accordion-icon {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
 }
 
 .according-content {
@@ -37,4 +38,12 @@
     padding: 10px;
     margin-top: 5px;
     align-items: center;
+}
+
+.back-icon {
+    position: absolute;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
