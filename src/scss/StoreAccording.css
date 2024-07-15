@@ -1,7 +1,6 @@
-/* src/scss/StoreAccording.css */
 .according {
-    width: 80%; /* Adjust the width as needed */
-    margin: 10px 0; /* Space between accordions */
+    width: 80%;
+    margin: 5px 0;
 }
 
 .according-title {
@@ -11,13 +10,13 @@
     padding: 15px;
     text-align: left;
     width: 100%;
-    font-size: 25px; /* Adjust the font size */
-    font-weight: bold; /* Make the text bold */
+    font-size: 25px;
+    font-weight: bold;
     cursor: pointer;
     display: flex;
-    align-items: center; /* Center icon and text vertically */
-    justify-content: center; /* Center icon and text horizontally */
-    gap: 10px; /* Space between icon and text */
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .according-title .icon {
@@ -25,14 +24,17 @@
 }
 
 .according-title .accordion-icon {
-    width: 24px; /* Adjust the width as needed */
-    height: 24px; /* Adjust the height as needed */
+    width: 24px;
+    height: 24px;
 }
 
 .according-content {
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 10px;
     margin-top: 5px;
+    align-items: center;
 }

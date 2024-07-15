@@ -27,10 +27,10 @@ const OwnerInfo = () => {
         <StoreAccording icon={<img src={icon2} alt={"가게설정"} className={"accordion-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
         </StoreAccording>
         <StoreAccording icon={<img src={icon1} alt={"정보수정"} className={"accordion-icon"}/>} title={"정보수정 - 업주 정보수정"} isCollapsible alwaysVisible>
-          <form>
+          <form className={"according-content"}>
             <div>
               <label>아이디</label>
-              <input
+              <input className={"input-box"}
                   type={"text"}
                   name={"userId"}
                   value={formData.userId}
@@ -40,7 +40,7 @@ const OwnerInfo = () => {
             </div>
             <div>
               <label>이름</label>
-              <input
+              <input className={"input-box"}
                   type={"text"}
                   name={"username"}
                   value={formData.username}
@@ -50,7 +50,7 @@ const OwnerInfo = () => {
             </div>
             <div>
               <label>새로운 비밀번호</label>
-              <input
+              <input className={"input-box"}
                   type={"text"}
                   name={"newPassword"}
                   value={formData.newPassword}
@@ -60,7 +60,7 @@ const OwnerInfo = () => {
             </div>
             <div>
               <label>새로운 비밀번호 확인</label>
-              <input
+              <input className={"input-box"}
                   type={"text"}
                   name={"confirmPassword"}
                   value={formData.confirmPassword}
@@ -70,7 +70,7 @@ const OwnerInfo = () => {
             </div>
             <div>
               <label>전화번호</label>
-              <input
+              <input className={"input-box"}
                   type={"text"}
                   name={"phoneNumber"}
                   value={formData.phoneNumber}

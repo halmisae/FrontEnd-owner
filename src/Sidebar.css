@@ -23,8 +23,8 @@
 }
 
 .sidebar img {
-    width: 30px; /* Adjust the size as needed */
-    height: 30px; /* Adjust the size as needed */
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
 }
 
@@ -78,12 +78,12 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center; /* 텍스트를 가운데 정렬 */
+    text-align: center;
     z-index: 1001;
 }
 
 .modal button {
-    margin: 0 10px; /* 버튼 사이 간격 */
+    margin: 0 10px;
     padding: 8px 16px;
     cursor: pointer;
 }
