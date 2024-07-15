@@ -19,9 +19,33 @@ const OwnerInfo = () => {
     setFormData(prevState => ({...prevState,[name]:value}));
   };
   const handleEditToggle =()=>{
+    if (isEdit){
+      if (!validateForm()) {
+        return;
+      }
+    }
     setEdit(prevState => !prevState);
-  };
+  }
+  const validateForm =()=>{
+    const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*[<>'#()\/\\]).{8,32}$/;
+    const phoneValid = /^010\d{8}%/;
 
+    if (!passwordValid.test(formData.newPassword)){
+      alert("비밀번호는 영어 소문자, 대문자, 숫자, 특수문자 중 최소 2가지 이상을 조합하여 최소 8자 이상 최대 32자 이내여야 합니다.(<,>,(,),#,',/,\\ 문자는 허용되지 않습니다.)");
+      return false;
+    }
+
+    if (formData.newPassword !== formData.confirmPassword){
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다");
+      return false;
+    }
+
+    if (!phoneValid.test(formData.phoneNumber)){
+      alert("전화번호는 010으로 시작하며, 11자리여야 합니다");
+      return false;
+    }
+    return true;
+  }
   return(
       <div className={"store-setting"}>
         <StoreAccording icon={<img src={icon2} alt={"가게설정"} className={"accordion-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
