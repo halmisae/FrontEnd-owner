@@ -8,6 +8,7 @@ import "../scss/OwnerInfo.css"
 const OwnerInfo = () => {
   const [formData, setFormData] = useState({
     userId: "userId",
+    businessNumber: "",
     username: "userName",
     newPassword: "********",
     confirmPassword: "********",
@@ -48,58 +49,68 @@ const OwnerInfo = () => {
   }
   return(
       <div className={"store-setting"}>
-        <StoreAccording icon={<img src={icon2} alt={"가게설정"} className={"accordion-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
+        <StoreAccording icon={<img src={icon2} alt={"가게설정"} className={"according-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
         </StoreAccording>
-        <StoreAccording icon={<img src={icon1} alt={"정보수정"} className={"accordion-icon"}/>} title={"정보수정 - 업주 정보수정"} isCollapsible alwaysVisible>
+        <StoreAccording icon={<img src={icon1} alt={"정보수정"} className={"according-icon"}/>} title={"정보수정 - 업주 정보수정"} isCollapsible alwaysVisible>
           <form className={"according-content"}>
             <div>
               <label>아이디</label>
               <input className={"input-box"}
-                  type={"text"}
-                  name={"userId"}
-                  value={formData.userId}
-                  onChange={handleChange}
-                  disabled
+                     type={"text"}
+                     name={"userId"}
+                     value={formData.userId}
+                     onChange={handleChange}
+                     disabled
+              />
+            </div>
+            <div>
+              <label>사업자번호</label>
+              <input className={"input-box"}
+                     type={"text"}
+                     name={"businessNumber"}
+                     value={formData.businessNumber}
+                     onChange={handleChange}
+                     disabled
               />
             </div>
             <div>
               <label>이름</label>
               <input className={"input-box"}
-                  type={"text"}
-                  name={"username"}
-                  value={formData.username}
-                  onChange={handleChange}
-                  disabled
+                     type={"text"}
+                     name={"username"}
+                     value={formData.username}
+                     onChange={handleChange}
+                     disabled
               />
             </div>
             <div>
               <label>새로운 비밀번호</label>
               <input className={"input-box"}
-                  type={"text"}
-                  name={"newPassword"}
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  disabled={!isEdit}
+                     type={"text"}
+                     name={"newPassword"}
+                     value={formData.newPassword}
+                     onChange={handleChange}
+                     disabled={!isEdit}
               />
             </div>
             <div>
               <label>새로운 비밀번호 확인</label>
               <input className={"input-box"}
-                  type={"text"}
-                  name={"confirmPassword"}
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  disabled={!isEdit}
+                     type={"text"}
+                     name={"confirmPassword"}
+                     value={formData.confirmPassword}
+                     onChange={handleChange}
+                     disabled={!isEdit}
               />
             </div>
             <div>
               <label>전화번호</label>
               <input className={"input-box"}
-                  type={"text"}
-                  name={"phoneNumber"}
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  disabled={!isEdit}
+                     type={"text"}
+                     name={"phoneNumber"}
+                     value={formData.phoneNumber}
+                     onChange={handleChange}
+                     disabled={!isEdit}
               />
             </div>
             <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
