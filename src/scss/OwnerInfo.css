@@ -24,3 +24,8 @@ label {
     border-radius: 4px;
 }
 
+.input-box::-webkit-inner-spin-button,
+.input-box::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

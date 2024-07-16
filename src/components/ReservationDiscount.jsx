@@ -4,18 +4,22 @@ import icon1 from "../assets/storesale-edit.png";
 import icon2 from "../assets/store-setting-edit.png";
 
 const ReservationDiscount = () => {
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState(1000);
+  const [error, setError] =useState("");
 
-  const increaseDiscount = () => {
-    setDiscount((prevDiscount) => prevDiscount + 1000);
-  };
-
-  const decreaseDiscount = () => {
-    setDiscount((prevDiscount) => Math.max(prevDiscount - 1000, 0));
-  };
+  const handleInputChange =(e)=>{
+    const value = e.target.value;
+    setDiscount(value);
+    setError("");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!String(discount).endsWith("000")){
+      setError("할인 금액의 끝 3자리 수는 000으로 끝나야 합니다.");
+      return;
+    }
+
     try {
       const response = await fetch("", {
         method: "POST",
@@ -56,18 +60,10 @@ const ReservationDiscount = () => {
                   className={"input-box"}
                   type={"number"}
                   value={discount}
-                  readOnly
-                  step={1000}
                   min={0}
+                  onChange={handleInputChange}
               />
-              <div className={"discount-controls"}>
-                <button type={"button"} onClick={decreaseDiscount}>
-                  -1000
-                </button>
-                <button type={"button"} onClick={increaseDiscount}>
-                  +1000
-                </button>
-              </div>
+              {error && <p className={"error-message"} style={{color : 'red'}}>{error}</p>}
             </div>
             <button className={"modal-button"} type={"submit"}>
               설정하기
