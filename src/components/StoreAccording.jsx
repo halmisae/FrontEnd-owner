@@ -2,6 +2,7 @@ import React,{useState}from "react";
 import {useNavigate} from "react-router-dom";
 import backIcon from "../assets/back-space.png";
 import "../scss/StoreAccording.css";
+import PropTypes from "prop-types";
 
 const StoreAccording = ({title,icon,children,isCollapsible, alwaysVisible}) =>{
     const [isOpen, setIsOpen] = useState(alwaysVisible);
@@ -34,6 +35,20 @@ const StoreAccording = ({title,icon,children,isCollapsible, alwaysVisible}) =>{
             {(isOpen || alwaysVisible)&& (<div className={"according-content"}>{children}</div>)}
         </div>
     )
+};
+
+StoreAccording.propTypes = {
+    icon: PropTypes.element.isRequired,
+    title: PropTypes.string.isRequired,
+    isCollapsible: PropTypes.bool,
+    alwaysVisible: PropTypes.bool,
+    children: PropTypes.node,
+};
+
+StoreAccording.defaultProps = {
+    isCollapsible : false,
+    alwaysVisible : false,
+    children : null,
 };
 
 export default StoreAccording;

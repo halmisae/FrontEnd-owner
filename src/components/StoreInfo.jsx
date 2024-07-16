@@ -27,7 +27,7 @@ const StoreInfo = () => {
     const renderHourOption =()=>{
         const options = [];
         for (let hour =1; hour <= 24; hour++){
-            const hourString = hour < 10 ? `0${hour}` : `${hour}`
+            const hourString = hour < 10 ? `0${hour}` : `${hour}`;
             options.push(
                 <option key={hour} value={hourString}>
                     {hourString}

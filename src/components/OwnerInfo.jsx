@@ -28,7 +28,7 @@ const OwnerInfo = () => {
     setEdit(prevState => !prevState);
   }
   const validateForm =()=>{
-    const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*[<>'#()\/\\]).{8,32}$/;
+    const passwordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*[<>'#()/\\]).{8,32}$/;
     const phoneValid = /^010\d{8}%/;
 
     if (!passwordValid.test(formData.newPassword)){
