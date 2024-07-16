@@ -48,7 +48,7 @@ const ReservationDiscount = () => {
             alwaysVisible={false}
         />
         <StoreAccording
-            icon={<img src={icon1} alt={"할인및위약금관리"} className={"according-icon"} />}
+            icon={<img src={icon1} alt={"할인및위약금관리-예약할인설정"} className={"according-icon"} />}
             title={"할인 및 위약금 관리 - 예약 할인설정"}
             isCollapsible
             alwaysVisible
