@@ -1,0 +1,19 @@
+.sale-container {
+    display: flex;
+    gap: 20px;
+}
+
+.sale-history-div {
+    flex: 3;
+}
+
+.sale-history {
+    height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.sale-graph {
+    flex: 7;
+}
