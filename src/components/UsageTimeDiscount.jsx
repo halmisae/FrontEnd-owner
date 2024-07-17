@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import StoreAccording from "./StoreAccording";
 import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storesale-edit.png"
+import "../scss/UsageTimeDiscount.css"
 
 const UsageTimeDiscount = () => {
     const [formData,setFormData] = useState({
@@ -56,8 +57,8 @@ const UsageTimeDiscount = () => {
               isCollapsible
               alwaysVisible
           >
-              <form className={"according-content"}>
-                  <div>
+              <form className={"discount-content"}>
+                  <div className={"discount-content"}>
                       <label>기본 이용시간 설정</label>
                       <select
                           value={formData.usageTime}
@@ -67,7 +68,7 @@ const UsageTimeDiscount = () => {
                           {renderUsageTimeOption()}
                       </select>
                   </div>
-                  <div>
+                  <div className={"discount-content"}>
                       <label>할인 시간 단위 설정</label>
                       <label>시간 단위 :
                           <span className={"span-space"}> </span>
@@ -81,7 +82,18 @@ const UsageTimeDiscount = () => {
                               </select>
                           </>
                       </label>
-
+                      <label>단위 시간당 할인 금액 :
+                          <span className={"span-space"}> </span>
+                          <>
+                              <input
+                                  type={"number"}
+                                  min={0}
+                                  value={formData.timeDiscount}
+                                  onChange={handleInputChange}
+                                  disabled={!isEdit}
+                              />
+                          </>
+                      </label>
                   </div>
                   <button className={"modal-button"} type={"button"} onClick={handEditToggle}>
                       {isEdit ? "설정하기" : "설정완료"}
