@@ -14,6 +14,7 @@ const StoreInfo = () => {
         weekEndBusinessHour: "",
         breakTime: "",
         endBreakTime: "",
+        storePhone: "031-***-****",
         holidays: []
     });
     const [isEdit,setEdit] = useState(false);
@@ -58,7 +59,6 @@ const StoreInfo = () => {
             }
         });
     }
-
     const daysOfWeeks=["월요일","화요일","수요일","목요일","금요일","토요일","일요일"];
     return(
         <div className={"store-setting"}>
@@ -94,6 +94,21 @@ const StoreInfo = () => {
                             />
                         ) : (
                             <span>{formData.storeAddress}</span>
+                        )}
+                    </div>
+                    <div>
+                        <label>가게 전화번호</label>
+                        {isEdit ? (
+                            <input
+                                className={"input-box"}
+                                type={"text"}
+                                name={"storePhone"}
+                                value={formData.storePhone}
+                                onChange={handleChange}
+                                disabled={!isEdit}
+                            />
+                        ) : (
+                            <span>{formData.storePhone}</span>
                         )}
                     </div>
                     <div className={"storeInfo-time"}>
