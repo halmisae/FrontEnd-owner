@@ -1,0 +1,112 @@
+.processing-container {
+    display: flex;
+    height: 650px;
+}
+
+.reservation-bar {
+    overflow-y: auto;
+    width: 250px;
+    height: 100vh;
+    background-color: #2e2e2e;
+    color: white;
+    padding: 10px;
+    border-right: solid #444;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+}
+
+.tab {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.tab h2 {
+    margin-top: 0;
+}
+
+.reservation-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.reservation {
+    background-color: #444;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reservation h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.reservation p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.reservation button {
+    margin-right: 5px;
+    background-color: #777;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.reservation button:hover {
+    background-color: #555;
+}
+
+.main {
+    flex: 1;
+    padding: 20px;
+
+}
+
+.reservation-details {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.menu section{
+    margin-top: 60px;
+}
+
+.reservation-details h2 {
+    margin-top: 0;
+}
+
+.reservation-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.reservation-details li {
+    margin-bottom: 15px;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.buttons button {
+    background-color: #777;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.buttons button:hover {
+    background-color: #555;
+}
