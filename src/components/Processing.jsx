@@ -1,24 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../scss/Processing.css';
+import axios from 'axios';
 
 const dummyData = [
     {
-        id: "004A",
+        id: "랜덤박스-004A",
         reservation_id: "004A",
         reservation_date: "2024-07-30T20:30:00",
-        guest_count: 4,
+        quantity: 5,
         total_price: 60000,
-        deposit: 30000,
-        notes: "대형 테이블 또는 음료로 희망",
         isProcessing: false,
-        menu: [
-            { item: "감자탕", quantity: 1 },
-            { item: "햄버거", quantity: 2 }
-        ]
+        isRandomBox: true,
     },
 
     {
-        id: "002A",
+        id: "랜덤박스-004A",
+        reservation_id: "004A",
+        reservation_date: "2024-07-30T20:30:00",
+        quantity: 5,
+        total_price: 60000,
+        isProcessing: false,
+        isRandomBox: true,
+    },
+
+    {
+        id: "랜덤박스-004A",
+        reservation_id: "004A",
+        reservation_date: "2024-07-30T20:30:00",
+        quantity: 5,
+        total_price: 60000,
+        isProcessing: false,
+        isRandomBox: true,
+    },
+
+    {
+        id: "랜덤박스-004A",
+        reservation_id: "004A",
+        reservation_date: "2024-07-30T20:30:00",
+        quantity: 5,
+        total_price: 60000,
+        isProcessing: false,
+        isRandomBox: true,
+    },
+
+    {
+        id: "예약-002A",
         reservation_id: "002A",
         reservation_date: "2024-07-30T21:30:00",
         guest_count: 5,
@@ -26,14 +52,14 @@ const dummyData = [
         deposit: 30000,
         notes: "저염음식 희망",
         isProcessing: false,
+        isRandomBox: false,
         menu: [
             { item: "피자", quantity: 1 },
             { item: "치킨", quantity: 2 }
         ]
     },
-
     {
-        id: "001A",
+        id: "예약-001A",
         reservation_id: "001A",
         reservation_date: "2024-07-06T13:21:00",
         guest_count: 2,
@@ -41,14 +67,14 @@ const dummyData = [
         deposit: 15000,
         notes: "창가 좌석 희망",
         isProcessing: true,
+        isRandomBox: false,
         menu: [
             { item: "비빔밥", quantity: 1 },
             { item: "냉면", quantity: 1 }
         ]
     },
-
     {
-        id: "003A",
+        id: "예약-003A",
         reservation_id: "003A",
         reservation_date: "2024-07-06T14:21:00",
         guest_count: 2,
@@ -56,6 +82,82 @@ const dummyData = [
         deposit: 15000,
         notes: "2인 좌석 희망",
         isProcessing: true,
+        isRandomBox: false,
+        menu: [
+            { item: "볶음밥", quantity: 1 },
+            { item: "라면", quantity: 1 }
+        ]
+    },
+    {
+        id: "예약-003A",
+        reservation_id: "003A",
+        reservation_date: "2024-07-06T14:21:00",
+        guest_count: 2,
+        total_price: 30000,
+        deposit: 15000,
+        notes: "2인 좌석 희망",
+        isProcessing: true,
+        isRandomBox: false,
+        menu: [
+            { item: "볶음밥", quantity: 1 },
+            { item: "라면", quantity: 1 }
+        ]
+    },
+    {
+        id: "예약-003A",
+        reservation_id: "003A",
+        reservation_date: "2024-07-06T14:21:00",
+        guest_count: 2,
+        total_price: 30000,
+        deposit: 15000,
+        notes: "2인 좌석 희망",
+        isProcessing: true,
+        isRandomBox: false,
+        menu: [
+            { item: "볶음밥", quantity: 1 },
+            { item: "라면", quantity: 1 }
+        ]
+    },
+    {
+        id: "예약-003A",
+        reservation_id: "003A",
+        reservation_date: "2024-07-06T14:21:00",
+        guest_count: 2,
+        total_price: 30000,
+        deposit: 15000,
+        notes: "2인 좌석 희망",
+        isProcessing: true,
+        isRandomBox: false,
+        menu: [
+            { item: "볶음밥", quantity: 1 },
+            { item: "라면", quantity: 1 }
+        ]
+    },
+    {
+        id: "예약-003A",
+        reservation_id: "003A",
+        reservation_date: "2024-07-06T14:21:00",
+        guest_count: 2,
+        total_price: 30000,
+        deposit: 15000,
+        notes: "2인 좌석 희망",
+        isProcessing: true,
+        isRandomBox: false,
+        menu: [
+            { item: "볶음밥", quantity: 1 },
+            { item: "라면", quantity: 1 }
+        ]
+    },
+    {
+        id: "예약-003A",
+        reservation_id: "003A",
+        reservation_date: "2024-07-06T14:21:00",
+        guest_count: 2,
+        total_price: 30000,
+        deposit: 15000,
+        notes: "2인 좌석 희망",
+        isProcessing: true,
+        isRandomBox: false,
         menu: [
             { item: "볶음밥", quantity: 1 },
             { item: "라면", quantity: 1 }
@@ -67,8 +169,25 @@ const Processing = () => {
     const [reservations, setReservations] = useState(dummyData);
     const [selectedReservation, setSelectedReservation] = useState(null);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            axios.get('/api/reservations')
+                .then(response => {
+                    setReservations(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching reservations:', error);
+                });
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
     const handleReservationClick = (reservation) => {
-        setSelectedReservation(reservation);
+        if (!reservation.isRandomBox) {
+            setSelectedReservation(reservation);
+        } else {
+            setSelectedReservation(null);
+        }
     };
 
     const handleAccept = (id) => {
@@ -76,11 +195,31 @@ const Processing = () => {
             reservation.id === id ? { ...reservation, isProcessing: true } : reservation
         ));
         setSelectedReservation(null);
+        axios.post('/api/accept', { id })
+            .then(response => {
+                console.log('Reservation accepted:', response);
+            })
+            .catch(error => {
+                console.error('Error accepting reservation:', error);
+            });
     };
 
     const handleReject = (id) => {
         setReservations(reservations.filter(reservation => reservation.id !== id));
         setSelectedReservation(null);
+    };
+
+    const handleComplete = (id) => {
+        setReservations(reservations.filter(reservation => reservation.id !== id));
+        setSelectedReservation(null);
+        // Update MySQL database as complete
+        axios.post('/api/complete', { id })
+            .then(response => {
+                console.log('Reservation completed:', response);
+            })
+            .catch(error => {
+                console.error('Error completing reservation:', error);
+            });
     };
 
     return (
@@ -90,11 +229,15 @@ const Processing = () => {
                     <h2>신규</h2>
                     <div className="reservation-list">
                         {reservations.filter(reservation => !reservation.isProcessing).map(reservation => (
-                            <div key={reservation.id} className="reservation" onClick={() => handleReservationClick(reservation)}>
-                                <h3>{reservation.reservation_id}</h3>
+                            <div key={reservation.id} className="reservation"
+                                 onClick={() => handleReservationClick(reservation)}>
+                                <h3>{reservation.id}</h3>
                                 <p>{new Date(reservation.reservation_date).toLocaleString()}</p>
-                                <button onClick={() => handleAccept(reservation.id)}>수락</button>
-                                <button onClick={() => handleReject(reservation.id)}>거절</button>
+                                <p>수량: {reservation.quantity}</p>
+                                <div>
+                                    <button onClick={() => handleAccept(reservation.id)}>수락</button>
+                                    <button onClick={() => handleReject(reservation.id)}>거절</button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -104,7 +247,7 @@ const Processing = () => {
                     <div className="reservation-list">
                         {reservations.filter(reservation => reservation.isProcessing).map(reservation => (
                             <div key={reservation.id} className="reservation" onClick={() => handleReservationClick(reservation)}>
-                                <h3>{reservation.reservation_id}</h3>
+                                <h3>{reservation.id}</h3>
                                 <p>{new Date(reservation.reservation_date).toLocaleString()}</p>
                             </div>
                         ))}
@@ -128,9 +271,18 @@ const Processing = () => {
                                 ))}
                             </ul>
                         </div>
-                        <div className="buttons">
-                            <button onClick={() => handleAccept(selectedReservation.id)}>수락</button>
-                            <button onClick={() => handleReject(selectedReservation.id)}>거절</button>
+                        <div className="accept-buttons">
+                            {selectedReservation.isProcessing ? (
+                                <>
+                                    <button onClick={() => handleComplete(selectedReservation.id)}>이용완료</button>
+                                    <button onClick={() => handleComplete(selectedReservation.id)}>노쇼</button>
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={() => handleAccept(selectedReservation.id)}>수락</button>
+                                    <button onClick={() => handleReject(selectedReservation.id)}>거절</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 )}
@@ -140,4 +292,3 @@ const Processing = () => {
 };
 
 export default Processing;
-
