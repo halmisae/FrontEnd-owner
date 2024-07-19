@@ -18,7 +18,6 @@
 .storeInfo-content span {
     font-size: 1.2em;
     display: block;
-    width: 100%;
     box-sizing: border-box;
 }
 
@@ -38,7 +37,7 @@
 .storeInfo-time span {
     margin: 0;
     font-size: 1em;
-    width: 10%;
+
 }
 
 .select-box {
@@ -48,8 +47,8 @@
 }
 
 .span-space {
-    padding: 0;
-    width: 10%;
+    padding:0px;
+    width: 10px;
     margin: 0 5px;
 }
 

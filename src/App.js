@@ -16,6 +16,7 @@ import ReservationDiscount from "./components/ReservationDiscount";
 import UsageTimeDiscount from "./components/UsageTimeDiscount";
 import ClosingDiscount from "./components/ClosingDiscount";
 import MenuListAdd from "./components/MenuListAdd";
+import Login from "./components/Login";
 import "./App.css";
 
 
@@ -32,7 +33,8 @@ const App =()=> {
               <Sidebar status={status} toggleStatus={toggleStatus}/>
                 <div className={"content"}>
                   <Routes>
-                      <Route path={"/"} element={<Home/>}/>
+                      <Route path={"/"} element={<Login/>}/>
+                      <Route path={"/home"} element={<Home/>}/>
                       <Route path={"/processing"} element={<Processing/>}/>
                       <Route path={"/reservation-status"} element={<ReservationStatus/>}/>
                       <Route path={"/sales-inquiry"} element={<SalesInquiry/>}/>
