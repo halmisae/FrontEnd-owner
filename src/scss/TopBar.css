@@ -28,6 +28,19 @@
     color: red;
 }
 
+.login-status {
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+.login-status.logged-in {
+    color: green;
+}
+
+.login-status.logged-out {
+    color: red;
+}
+
 .date-time {
     margin-left: auto;
 }

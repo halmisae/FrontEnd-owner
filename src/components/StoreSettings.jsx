@@ -10,6 +10,9 @@ import "../scss/StoreSetting.css"
 const StoreSettings = () => {
   const navigate = useNavigate();
 
+  const handleProtectedNavigation =(path) =>{
+      navigate("/",{state : {from : {pathname: path}}});
+  }
   const handleNavigation = (path) =>{
     navigate(path);
   };
@@ -19,9 +22,9 @@ const StoreSettings = () => {
         <StoreAccording icon={<img src={icon4} alt={"가게설정"} className={"according-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
         </StoreAccording>
         <StoreAccording icon={<img src={icon3} alt={"정보수정"} className={"according-icon"}/>} title={"정보수정"} isCollapsible alwaysVisible={false}>
-          <button className={"store-settings-item"} onClick={()=>handleNavigation("/owner-info")}>업주 정보수정</button>
-          <button className={"store-settings-item"} onClick={()=>handleNavigation("/store-info")}>가게 정보수정</button>
-          <button className={"store-settings-item"} onClick={()=>handleNavigation("/withdraw")}>회원탈퇴</button>
+          <button className={"store-settings-item"} onClick={()=>handleProtectedNavigation("/owner-info")}>업주 정보수정</button>
+          <button className={"store-settings-item"} onClick={()=>handleProtectedNavigation("/store-info")}>가게 정보수정</button>
+          <button className={"store-settings-item"} onClick={()=>handleProtectedNavigation("/withdraw")}>회원탈퇴</button>
         </StoreAccording>
         <StoreAccording icon={<img src={icon1} alt={"가게 메뉴관리"} className={"according-icon"}/>} title={"가게 메뉴관리"} isCollapsible alwaysVisible={false}>
           <button className={"store-settings-item"} onClick={()=>handleNavigation("/menu-list")}>메뉴 목록보기</button>
