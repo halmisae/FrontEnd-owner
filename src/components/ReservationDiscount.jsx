@@ -1,41 +1,61 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import StoreAccording from "./StoreAccording";
 import icon1 from "../assets/storesale-edit.png";
 import icon2 from "../assets/store-setting-edit.png";
+import api from "../api";
 
 const ReservationDiscount = () => {
-  const [discount, setDiscount] = useState(1000);
+  const [discount, setDiscount] = useState({
+    preorderDiscount: 1000,
+    storeNumber : 0
+  });
   const [error, setError] =useState("");
+  const [isEdit, setEdit] = useState(false);
 
+
+  useEffect(() => {
+    api.get("/preorderDiscount", {params: {storeNumber: 1}})
+        .then((response)=>{
+          const data = response.data;
+          setDiscount({
+            storeNumber: data.storeNumber,
+            preorderDiscount: data.preorderDiscount,
+          });
+        })
+        .catch((error)=>{
+          console.error("Error fetching data: ",error);
+        });
+  }, []);
   const handleInputChange =(e)=>{
     const value = e.target.value;
-    setDiscount(value);
+    setDiscount(prevState => ({
+      ...prevState,
+      preorderDiscount: value
+    }));
     setError("");
   }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!String(discount).endsWith("000")){
-      setError("할인 금액의 끝 3자리 수는 000으로 끝나야 합니다.");
-      return;
+  const handleEditToggle = () => {
+    if (isEdit) {
+      handleSubmit();
     }
+    setEdit((prevState) => !prevState);
+  };
 
-    try {
-      const response = await fetch("", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ discount }),
-      });
-      if (response.ok) {
-        alert("할인 금액이 성공적으로 설정되었습니다.");
-      } else {
-        alert("할인 금액 설정에 실패했습니다.");
+  const handleSubmit = () => {
+    if (!String(discount.preorderDiscount).endsWith("000")) {
+      setError("할인 금액의 끝 3자리 수는 000으로 끝나야 합니다.");
+    }else {
+      try {
+        api.post("/preorderDiscount", {...discount})
+            .then((response)=>{
+              console.log("Response: ",response.data);
+              setEdit(false);
+            })
+        alert("할인 금액이 설정되었습니다");
+      } catch (error){
+        console.error("Error submitting discount: ",error);
+        alert("할인 금액 설정 중 오류가 발생했습니다.");
       }
-    } catch (error) {
-      console.error("Error submitting discount:", error);
-      alert("할인 금액 설정 중 오류가 발생했습니다.");
     }
   };
 
@@ -53,20 +73,21 @@ const ReservationDiscount = () => {
             isCollapsible
             alwaysVisible
         >
-          <form onSubmit={handleSubmit}>
+          <form>
             <div>
               <label>예약 할인 금액설정</label>
               <input
                   className={"input-box"}
                   type={"number"}
-                  value={discount}
+                  value={discount.preorderDiscount}
                   min={0}
                   onChange={handleInputChange}
+                  disabled={!isEdit}
               />
               {error && <p className={"error-message"} style={{color : 'red'}}>{error}</p>}
             </div>
-            <button className={"modal-button"} type={"submit"}>
-              설정하기
+            <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
+              {isEdit ? "설정완료" : "수정하기"}
             </button>
           </form>
         </StoreAccording>

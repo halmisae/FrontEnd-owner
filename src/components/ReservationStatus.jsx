@@ -14,7 +14,8 @@ const ReservationStatus = () => {
                 weekends={true}
                 events={[
                     {title: '예약1', date: '2024-07-13'},
-                    {title: '예약2', date: '2024-07-13'}
+                    {title: '예약2', date: '2024-07-13'},
+                    {title: '예약10', date: '2024-09-13'}
                 ]}
                 height={800}
                 contentHeight={700}
