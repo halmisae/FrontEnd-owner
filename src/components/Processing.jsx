@@ -19,7 +19,7 @@ const Processing = () => {
         };
 
         fetchReservations();
-        const interval = setInterval(fetchReservations, 5000);
+        const interval = setInterval(fetchReservations, 10000);
         return () => clearInterval(interval);
     }, []);
 
@@ -141,13 +141,21 @@ const Processing = () => {
                             <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
                                  className="reservation"
                                  onClick={() => handleReservationClick(reservation)}>
-                                <h3>{reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}</h3>
+                                <h3>{reservation.orderType === "CLOSING_ORDER" ? `마감할인 주문번호${reservation.orderNumber}` : `방문예약 주문번호${reservation.reserveNumber}`}</h3>
                                 <p>{renderReservationTime(reservation)}</p>
-                                <p>수량: {reservation.people || reservation.quantity}</p>
-                                <div>
-                                    <button onClick={(e) => { e.stopPropagation(); handleAccept(reservation); }}>수락</button>
-                                    <button onClick={(e) => { e.stopPropagation(); handleReject(reservation); }}>거절</button>
-                                </div>
+                                <p>{reservation.orderType === "CLOSING_ORDER" ? "수량" : "인원수"}: {reservation.people || reservation.quantity}</p>
+                                    <div>
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAccept(reservation);
+                                        }}>수락
+                                        </button>
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleReject(reservation);
+                                        }}>거절
+                                        </button>
+                                    </div>
                             </div>
                         ))}
                     </div>
@@ -155,7 +163,7 @@ const Processing = () => {
                 <div className="tab">
                     <h2>진행중</h2>
                     <div className="reservation-list">
-                        {reservations.filter(reservation => reservation.requestStatus === "ACCEPT").map(reservation => (
+                    {reservations.filter(reservation => reservation.requestStatus === "ACCEPT").map(reservation => (
                             <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
                                  className="reservation"
                                  onClick={() => handleReservationClick(reservation)}>
@@ -173,10 +181,10 @@ const Processing = () => {
             <div className="main">
                 {selectedReservation && (
                     <div className="reservation-details">
-                        <h2>{selectedReservation.orderType === "CLOSING_ORDER" ? `픽업 예약 ${selectedReservation.orderNumber}` : `예약 ${selectedReservation.reserveNumber}`}</h2>
+                        <h2>{selectedReservation.orderType === "CLOSING_ORDER" ? `마감할인 주문 ${selectedReservation.orderNumber}` : `방문예약 ${selectedReservation.reserveNumber}`}</h2>
                         <p>{selectedReservation.orderType === "CLOSING_ORDER" ? `픽업 시간: ${renderReservationTime(selectedReservation)}` : `방문 일시: ${renderReservationTime(selectedReservation)}`}</p>
                         <p>{selectedReservation.orderType === "CLOSING_ORDER" ? `수량: ${selectedReservation.quantity}` : `인원: ${selectedReservation.people}`}</p>
-                        <p>총액: {selectedReservation.closingPrice}원</p>
+                        <p>총액: {selectedReservation.totalPrice}원</p>
                         {selectedReservation.orderType !== "CLOSING_ORDER" && (
                             <>
                                 <p>이용시간: {selectedReservation.useTime}분</p>
@@ -187,6 +195,18 @@ const Processing = () => {
                                             <li key={index}>{menuItem.menuName} x {menuItem.quantity}</li>
                                         ))}
                                     </ul>
+                                    <div>
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAccept(selectedReservation);
+                                        }}>수락
+                                        </button>
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleReject(selectedReservation);
+                                        }}>거절
+                                        </button>
+                                    </div>
                                 </div>
                             </>
                         )}
