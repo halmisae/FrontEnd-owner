@@ -8,7 +8,7 @@
 
 .login-window {
     width: 100%;
-    max-width: 550px;
+    max-width: 500px;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -35,14 +35,14 @@ form {
     margin-left: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 60vh;
+    width: 450px;
 }
 
 .login-button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    width: 500px;
+    width: 470px;
     background-color: #007bff;
     color: #fff;
     font-size: 16px;

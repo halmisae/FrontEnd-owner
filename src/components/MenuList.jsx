@@ -21,7 +21,6 @@ const MenuList = () => {
 
     const handleEditClick = (menu) => {
                 const menuData = menu
-        console.log(menuData)
                 navigate("/menu-list-add", {
                     state: {
                         mode: 'edit',
