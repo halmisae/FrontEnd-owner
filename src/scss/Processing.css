@@ -42,20 +42,6 @@
     font-size: 12px;
 }
 
-.reservation button {
-    margin-right: 5px;
-    background-color: #777;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.reservation button:hover {
-    background-color: #555;
-}
-
 .main {
     flex: 7;
     padding: 20px;
@@ -89,20 +75,3 @@
     margin-bottom: 15px;
 }
 
-.accept-buttons {
-    margin-top: 20px;
-}
-
-.accept-buttons button {
-    background-color: #777;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.accept-buttons button:hover {
-    background-color: #555;
-}

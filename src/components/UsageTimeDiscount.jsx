@@ -51,7 +51,6 @@ const UsageTimeDiscount = () => {
         api
             .post("/unitTimeDiscount", formData)
             .then((response) => {
-                console.log("Data submitted successfully:", response.data);
                 alert("설정이 성공적으로 완료되었습니다.");
             })
             .catch((error) => {

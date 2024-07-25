@@ -15,7 +15,6 @@ const ReservationDetail = () => {
             api.get(`${api.getUri()}/schedule/daily?storeNumber=1&date=${encodeURIComponent(date)}`)
                 .then(response => {
                     setReservations(response.data);
-                    console.log(response.data);
                 })
                 .catch(error => {
                     console.error("Error fetching reservation: ", error);
@@ -40,7 +39,6 @@ const ReservationDetail = () => {
         setSelectedReservation(null);
         api.post('/api/accept', { reserveNumber })
             .then(response => {
-                console.log('Reservation accepted:', response);
             })
             .catch(error => {
                 console.error('Error accepting reservation:', error);
@@ -72,7 +70,6 @@ const ReservationDetail = () => {
         setSelectedReservation(null);
         api.post('/api/complete', { reserveNumber })
             .then(response => {
-                console.log('Reservation completed:', response);
             })
             .catch(error => {
                 console.error('Error completing reservation:', error);

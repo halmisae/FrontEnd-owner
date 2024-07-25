@@ -48,7 +48,6 @@ const ReservationDiscount = () => {
       try {
         api.post("/preorderDiscount", {...discount})
             .then((response)=>{
-              console.log("Response: ",response.data);
               setEdit(false);
             })
         alert("할인 금액이 설정되었습니다");

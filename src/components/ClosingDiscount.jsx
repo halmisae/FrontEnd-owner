@@ -53,7 +53,6 @@ const ClosingDiscount = () => {
 
     api.post('/closingDiscount', { ...formData, pickupTime: formattedPickupTime })
         .then((response) => {
-          console.log('Response:', response.data);
           setEdit(false);
         })
         .catch((error) => {

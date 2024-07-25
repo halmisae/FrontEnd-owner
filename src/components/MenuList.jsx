@@ -19,24 +19,19 @@ const MenuList = () => {
             });
     }, []);
 
-    const handleEditClick = (menuNumber) => {
-        api.get(`/menuList/`, {params: {menuNumber}})
-            .then((response) => {
-                const menuData = response.data;
+    const handleEditClick = (menu) => {
+                const menuData = menu
+        console.log(menuData)
                 navigate("/menu-list-add", {
                     state: {
                         mode: 'edit',
-                        menuNumber,
+                        menuNumber: menuData.menuNumber,
                         menuName: menuData.menuName,
-                        menuDescription: menuData.menuDescription,
+                        menuDescription: menuData.introduction,
                         price: menuData.price,
                         menuImage: menuData.menuImage
                     }
-                });
             })
-            .catch((error) => {
-                console.error("Error fetching menu data: ", error);
-            });
     };
 
     const handleAddClick = () => {
@@ -78,7 +73,7 @@ const MenuList = () => {
                             <span>{menu.price}원</span>
                             <span>{menu.introduction}</span>
                             <span><img src={menu.image} alt={"메뉴사진"} className={"according-icon"} /></span>
-                            <button onClick={() => handleEditClick(menu.menuNumber)}>수정</button>
+                            <button onClick={() => handleEditClick(menu)}>수정</button>
                             <button onClick={() => handleDeleteClick(menu.menuNumber)}>삭제</button>
                         </div>
                     ))}

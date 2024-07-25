@@ -25,9 +25,9 @@ const MenuListAdd = () => {
             if (state.mode === "edit") {
                 setMenuNumber(state.menuNumber);
                 setMenuName(state.menuName);
-                setIntroduction(state.introduction);
+                setIntroduction(state.menuDescription);
                 setPrice(state.price);
-                setImage(state.image);
+                setImage(state.menuImage);
                 setImagePrevUrl(state.image);
             }
         }
@@ -56,6 +56,7 @@ const MenuListAdd = () => {
         }
 
         const data = {
+            menuNumber,
             storeNumber,
             menuName,
             introduction,
@@ -63,7 +64,7 @@ const MenuListAdd = () => {
         };
 
         const apiCall = mode === "edit"
-            ? api.put(`/menuList/menu`, data, { params: { menuNumber } })
+            ? api.patch(`/menuList/menu`, data)
             : api.post("/menuList/menu", data);
 
         apiCall

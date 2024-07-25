@@ -53,6 +53,7 @@ const StoreInfo = () => {
         const {value,checked} = e.target;
         setFormData((prevState) =>{
             if (checked){
+                console.log({...prevState,holidays:[...prevState.holidays,value]})
                 return {...prevState,holidays:[...prevState.holidays,value]};
             }else {
                 return {...prevState,holidays:prevState.holidays.filter((day)=>day !== value)}

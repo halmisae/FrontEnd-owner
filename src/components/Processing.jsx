@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../scss/Processing.css';
 import api from "../api";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from "react-bootstrap/Button";
 
 const Processing = () => {
     const [reservations, setReservations] = useState([]);
@@ -10,7 +12,6 @@ const Processing = () => {
         const fetchReservations = () => {
             api.get(`${api.getUri()}/processing`, { params: { storeNumber: 1 } })
                 .then(response => {
-                    console.log('Fetched reservations:', response.data);
                     setReservations(response.data);
                 })
                 .catch(error => {
@@ -145,16 +146,16 @@ const Processing = () => {
                                 <p>{renderReservationTime(reservation)}</p>
                                 <p>{reservation.orderType === "CLOSING_ORDER" ? "수량" : "인원수"}: {reservation.people || reservation.quantity}</p>
                                     <div>
-                                        <button onClick={(e) => {
+                                        <Button onClick={(e) => {
                                             e.stopPropagation();
                                             handleAccept(reservation);
                                         }}>수락
-                                        </button>
-                                        <button onClick={(e) => {
+                                        </Button>
+                                        <Button onClick={(e) => {
                                             e.stopPropagation();
                                             handleReject(reservation);
                                         }}>거절
-                                        </button>
+                                        </Button>
                                     </div>
                             </div>
                         ))}
@@ -170,8 +171,8 @@ const Processing = () => {
                                 <h3>{reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}</h3>
                                 <p>{renderReservationTime(reservation)}</p>
                                 <div>
-                                    <button onClick={(e) => { e.stopPropagation(); handleComplete(reservation); }}>이용완료</button>
-                                    <button onClick={(e) => { e.stopPropagation(); handleNoShow(reservation); }}>노쇼</button>
+                                    <Button variant={"success"} onClick={(e) => { e.stopPropagation(); handleComplete(reservation); }}>이용완료</Button>
+                                    <Button variant={"danger"} onClick={(e) => { e.stopPropagation(); handleNoShow(reservation); }}>노쇼</Button>
                                 </div>
                             </div>
                         ))}
@@ -185,31 +186,29 @@ const Processing = () => {
                         <p>{selectedReservation.orderType === "CLOSING_ORDER" ? `픽업 시간: ${renderReservationTime(selectedReservation)}` : `방문 일시: ${renderReservationTime(selectedReservation)}`}</p>
                         <p>{selectedReservation.orderType === "CLOSING_ORDER" ? `수량: ${selectedReservation.quantity}` : `인원: ${selectedReservation.people}`}</p>
                         <p>총액: {selectedReservation.totalPrice}원</p>
-                        {selectedReservation.orderType !== "CLOSING_ORDER" && (
                             <>
                                 <p>이용시간: {selectedReservation.useTime}분</p>
                                 <div className="menu-section">
-                                    <h4>메뉴 목록</h4>
+                                    <h4>{selectedReservation.orderType === "CLOSING_ORDER" ? "" : "메뉴 목록"}</h4>
                                     <ul>
                                         {selectedReservation.menuDTO && selectedReservation.menuDTO.map((menuItem, index) => (
                                             <li key={index}>{menuItem.menuName} x {menuItem.quantity}</li>
                                         ))}
                                     </ul>
                                     <div>
-                                        <button onClick={(e) => {
+                                        <Button variant={"primary"} size={"lg"} onClick={(e) => {
                                             e.stopPropagation();
                                             handleAccept(selectedReservation);
-                                        }}>수락
-                                        </button>
-                                        <button onClick={(e) => {
+                                        }}>{selectedReservation.requestStatus === "ACCEPT" ? "이용완료" : "수락"}
+                                        </Button>
+                                        <Button variant={"danger"} size={"lg"} onClick={(e) => {
                                             e.stopPropagation();
-                                            handleReject(selectedReservation);
-                                        }}>거절
-                                        </button>
+                                               handleReject(selectedReservation);
+                                        }}>{selectedReservation.requestStatus === "ACCEPT" ? "노쇼" : "거절"}
+                                        </Button>
                                     </div>
                                 </div>
                             </>
-                        )}
                     </div>
                 )}
             </div>
