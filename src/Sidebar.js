@@ -63,7 +63,7 @@ const Sidebar = () => {
                 <Link to={"/reservation-status"} onClick={(e) => handleProtectedLinkClick(e, "/reservation-status")}>
                     <img src={icon3} alt={"예약현황"} /><span>예약현황</span>
                 </Link>
-                <Link to={"/sales-inquiry"} onClick={(e) => handleProtectedLinkClick(e, "/sales-inquiry")}>
+                <Link to={"/sales"} onClick={(e) => handleProtectedLinkClick(e, "/sales-inquiry")}>
                     <img src={icon4} alt={"매출조회"} /><span>매출조회</span>
                 </Link>
                 <Link to={"/store-setting"} onClick={(e) => handleProtectedLinkClick(e, "/store-setting")}>

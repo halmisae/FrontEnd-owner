@@ -17,18 +17,20 @@ import UsageTimeDiscount from "./components/UsageTimeDiscount";
 import ClosingDiscount from "./components/ClosingDiscount";
 import MenuListAdd from "./components/MenuListAdd";
 import Login from "./components/Login";
+import AddressSearch from "./components/AddressSearch";
 import "./App.css";
 import { AuthProvider } from "./AuthContext";
 import PrivateRoute from "./PrivateRoute";
+import ReservationDetail from "./components/ReservationDetail";
 
 const App = () => {
     return (
         <AuthProvider>
             <BrowserRouter>
                 <div className={"app"}>
-                    <TopBar/>
+                    <TopBar />
                     <div className={"main-content"}>
-                        <Sidebar/>
+                        <Sidebar />
                         <div className={"content"}>
                             <Routes>
                                 <Route path={"/"} element={<Login />} />
@@ -36,7 +38,8 @@ const App = () => {
                                 <Route element={<PrivateRoute />}>
                                     <Route path={"/processing"} element={<Processing />} />
                                     <Route path={"/reservation-status"} element={<ReservationStatus />} />
-                                    <Route path={"/sales-inquiry"} element={<SalesInquiry />} />
+                                    <Route path={"/reservation-detail"} element={<ReservationDetail />} />
+                                    <Route path={"/sales"} element={<SalesInquiry />} />
                                     <Route path={"/store-setting"} element={<StoreSettings />} />
                                     <Route path={"/close-store"} element={<CloseStore />} />
                                     <Route path={"/owner-info"} element={<OwnerInfo />} />
@@ -47,6 +50,7 @@ const App = () => {
                                     <Route path={"/reservation-discount"} element={<ReservationDiscount />} />
                                     <Route path={"/usage-time-discount"} element={<UsageTimeDiscount />} />
                                     <Route path={"/closing-discount"} element={<ClosingDiscount />} />
+                                    <Route path={"/address-search"} element={<AddressSearch />} />
                                 </Route>
                             </Routes>
                         </div>

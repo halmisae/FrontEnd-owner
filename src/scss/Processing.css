@@ -6,10 +6,9 @@
 
 .reservation-bar {
     flex: 3;
-    height: 91.2vh;
+    height: 770px;
     background-color: #2e2e2e;
     color: white;
-    padding: 10px;
     border-right: solid #444;
 }
 
