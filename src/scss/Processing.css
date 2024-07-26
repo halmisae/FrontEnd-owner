@@ -1,12 +1,11 @@
 .processing-container {
     display: flex;
     overflow: hidden;
-    gap: 20px;
 }
 
 .reservation-bar {
     flex: 3;
-    height: 100vh;
+    height: 44em;
     background-color: #2e2e2e;
     color: white;
     border-right: solid #444;
@@ -19,7 +18,7 @@
 .reservation-list {
     display: flex;
     flex-direction: column;
-    height: 50vh;
+    height: 40vh;
     overflow-y: auto;
     margin-bottom: 10px;
 }
