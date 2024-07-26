@@ -29,7 +29,7 @@ const MenuListAdd = () => {
                 setIntroduction(state.menuDescription);
                 setPrice(state.price);
                 setImage(state.menuImage);
-                setImagePrevUrl(state.image);
+                setImagePrevUrl(state.menuImage);
             }
         }
     }, [location]);
