@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {ReservationContext} from "./ReservationContext";
 import icon1 from "./assets/power.png";
 import icon2 from "./assets/processing.png";
 import icon3 from "./assets/reservationstatus.png";
@@ -13,6 +14,7 @@ const Sidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const { isLoggedIn, logout, isOperational, operationalIn, operationalOut } = useAuth();
+    const {newReservationsCount} = useContext(ReservationContext);
 
     const handleToggle = () => {
         if (!isLoggedIn) {
@@ -58,12 +60,20 @@ const Sidebar = () => {
         <div className={"sidebar"}>
             <div className={"sidebar-content"}>
                 <Link to={"/processing"} onClick={(e) => handleProtectedLinkClick(e, "/processing")}>
-                    <img src={icon2} alt={"처리중"} /><span>처리중</span>
+                    <div className={`icon-container ${newReservationsCount > 0 ? 'shake' : ''}`}>
+                        <img src={icon2} alt={"처리중"} />
+                        {newReservationsCount > 0 && (
+                            <span className="notification-badge">
+                                {newReservationsCount}
+                            </span>
+                        )}
+                    </div>
+                    <span>처리중</span>
                 </Link>
                 <Link to={"/reservation-status"} onClick={(e) => handleProtectedLinkClick(e, "/reservation-status")}>
                     <img src={icon3} alt={"예약현황"} /><span>예약현황</span>
                 </Link>
-                <Link to={"/sales"} onClick={(e) => handleProtectedLinkClick(e, "/sales-inquiry")}>
+                <Link to={"/sales"} onClick={(e) => handleProtectedLinkClick(e, "/sales")}>
                     <img src={icon4} alt={"매출조회"} /><span>매출조회</span>
                 </Link>
                 <Link to={"/store-setting"} onClick={(e) => handleProtectedLinkClick(e, "/store-setting")}>
