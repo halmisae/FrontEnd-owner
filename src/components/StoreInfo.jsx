@@ -1,41 +1,45 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storeinfo-edit.png";
 import StoreAccording from "./StoreAccording";
 import DaumPost from "./DaumPost";
-import "../scss/StoreInfo.css"
+import "../scss/StoreInfo.css";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const StoreInfo = () => {
-    const [formData,setFormData] = useState({
-        storeNumber: 1,
+    const [formData, setFormData] = useState({
         storeName: "할미새",
         storeAddress: "경기도 **시 **구",
         detailAddress: "",
-        businessHour: "",
-        endBusinessHour: "",
-        weekBusinessHour: "",
-        weekEndBusinessHour: "",
-        breakTime: "",
-        endBreakTime: "",
+        businessHour: "09:00",
+        endBusinessHour: "18:00",
+        weekBusinessHour: "10:00",
+        weekEndBusinessHour: "20:00",
+        breakTime: "13:00",
+        endBreakTime: "14:00",
         storePhone: "031-***-****",
         holidays: []
     });
-    const [isEdit,setEdit] = useState(false);
-    const handleChange =(e)=>{
-        const {name,value}=e.target;
-        setFormData((prevState)=>({...prevState,[name]:value}));
-    }
-    const handleEditToggle =()=>{
-        if (isEdit){
+    const [isEdit, setEdit] = useState(false);
+    const {selectedStore} = useAuth();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({ ...prevState, [name]: value }));
+    };
+
+    const handleEditToggle = () => {
+        if (isEdit) {
             updateStoreInfo();
         }
-        setEdit(prevState => !prevState);
-    }
+        setEdit((prevState) => !prevState);
+    };
+
     const updateStoreInfo = async () => {
-        const address = `${formData.storeAddress}${formData.detailAddress}`;
-        const quarryParams = new URLSearchParams({
-            storeNumber: formData.storeNumber,
+        const address = `${formData.storeAddress} ${formData.detailAddress}`;
+        const queryParams = new URLSearchParams({
+            storeNumber: selectedStore,
             storeName: formData.storeName,
             address: address,
             storePhone: formData.storePhone,
@@ -48,19 +52,19 @@ const StoreInfo = () => {
             storeHoliday: formData.holidays.join(",")
         }).toString();
         try {
-            const response = await api.patch(`/information?${quarryParams}`,{},{
-                headers : {
-                    "Content-Type" : "application/json",
+            await api.patch(`/information?${queryParams}`, {}, {
+                headers: {
+                    "Content-Type": "application/json",
                 }
-            })
-        }
-        catch (error){
+            });
+        } catch (error) {
             console.error("가게정보 업로드중 에러 발생: ", error);
         }
     };
-    const renderHourOption =()=>{
+
+    const renderHourOption = () => {
         const options = [];
-        for (let hour =1; hour <= 24; hour++){
+        for (let hour = 0; hour < 24; hour++) {
             const hourString = hour < 10 ? `0${hour}` : `${hour}`;
             options.push(
                 <option key={hour} value={hourString}>
@@ -69,10 +73,11 @@ const StoreInfo = () => {
             );
         }
         return options;
-    }
-    const renderMinuteOption =()=>{
+    };
+
+    const renderMinuteOption = () => {
         const options = [];
-        for (let minute = 0; minute < 60; minute += 10){
+        for (let minute = 0; minute < 60; minute += 10) {
             const minuteString = minute < 10 ? `0${minute}` : `${minute}`;
             options.push(
                 <option key={minute} value={minuteString}>
@@ -81,7 +86,8 @@ const StoreInfo = () => {
             );
         }
         return options;
-    }
+    };
+
     const holidayCheckBoxChange = (e) => {
         const { value, checked } = e.target;
         const weekdays = {
@@ -101,11 +107,13 @@ const StoreInfo = () => {
             }
         });
     };
-    const daysOfWeeks=["월요일","화요일","수요일","목요일","금요일","토요일","일요일"];
+
+    const daysOfWeeks = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
     const setAddress = (address) => {
-        setFormData((prevState) => ({...prevState, storeAddress: address}));
+        setFormData((prevState) => ({ ...prevState, storeAddress: address }));
     };
+
     return (
         <div className={"store-setting"}>
             <StoreAccording icon={<img src={icon1} alt={"가게설정"} className={"according-icon"} />} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
@@ -113,7 +121,7 @@ const StoreInfo = () => {
             <StoreAccording icon={<img src={icon2} alt={"가게정보수정"} className={"according-icon"} />} title={"가게 정보수정"} isCollapsible alwaysVisible>
                 <form className={"storeInfo-content"}>
                     <div>
-                        <label>상호명</label>
+                        <label className={"storeInfo-title"}>상호명</label>
                         {isEdit ? (
                             <input
                                 className={"input-box"}
@@ -128,7 +136,7 @@ const StoreInfo = () => {
                         )}
                     </div>
                     <div>
-                        <label>가게 주소</label>
+                        <label className={"storeInfo-title"}>가게 주소</label>
                         {isEdit ? (
                             <>
                                 <input
@@ -146,7 +154,7 @@ const StoreInfo = () => {
                         )}
                     </div>
                     <div>
-                        <label>상세 주소</label>
+                        <label className={"storeInfo-title"}>상세 주소</label>
                         {isEdit ? (
                             <>
                                 <input
@@ -158,12 +166,12 @@ const StoreInfo = () => {
                                     disabled={!isEdit}
                                 />
                             </>
-                        ):(
+                        ) : (
                             <span>{formData.detailAddress}</span>
                         )}
                     </div>
                     <div>
-                        <label>가게 전화번호</label>
+                        <label className={"storeInfo-title"}>가게 전화번호</label>
                         {isEdit ? (
                             <input
                                 className={"input-box"}
@@ -178,8 +186,8 @@ const StoreInfo = () => {
                         )}
                     </div>
                     <div className={"storeInfo-time"}>
-                        <label>영업시간</label>
-                        <label>평일 :
+                        <label className={"storeInfo-title"}>영업시간</label>
+                        <label className={"storeInfo-title"}>평일 :
                             <span className={"span-space"}> </span>
                             <>
                                 <select
@@ -194,9 +202,9 @@ const StoreInfo = () => {
                                 :
                                 <select
                                     className={"select-box"}
-                                    name={"businessHourMinute"}
+                                    name={"businessHour"}
                                     value={formData.businessHour.split(':')[1]}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}:${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
@@ -214,16 +222,16 @@ const StoreInfo = () => {
                                 :
                                 <select
                                     className={"select-box"}
-                                    name={"endBusinessHourMinute"}
+                                    name={"endBusinessHour"}
                                     value={formData.endBusinessHour.split(':')[1]}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({ target: { name: 'endBusinessHour', value: `${formData.endBusinessHour.split(':')[0]}:${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
                                 </select>
                             </>
                         </label>
-                        <label>주말 :
+                        <label className={"storeInfo-title"}>주말 :
                             <span className={"span-space"}> </span>
                             <>
                                 <select
@@ -238,9 +246,9 @@ const StoreInfo = () => {
                                 :
                                 <select
                                     className={"select-box"}
-                                    name={"weekBusinessHourMinute"}
+                                    name={"weekBusinessHour"}
                                     value={formData.weekBusinessHour.split(':')[1]}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({ target: { name: 'weekBusinessHour', value: `${formData.weekBusinessHour.split(':')[0]}:${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
@@ -258,16 +266,16 @@ const StoreInfo = () => {
                                 :
                                 <select
                                     className={"select-box"}
-                                    name={"weekEndBusinessHourMinute"}
+                                    name={"weekEndBusinessHour"}
                                     value={formData.weekEndBusinessHour.split(':')[1]}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({ target: { name: 'weekEndBusinessHour', value: `${formData.weekEndBusinessHour.split(':')[0]}:${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
                                 </select>
                             </>
                         </label>
-                        <label>브레이크 타임 :
+                        <label className={"storeInfo-title"}>브레이크 타임 :
                             <span className={"span-space"}> </span>
                             <>
                                 <select
@@ -282,9 +290,9 @@ const StoreInfo = () => {
                                 :
                                 <select
                                     className={"select-box"}
-                                    name={"breakTimeMinute"}
+                                    name={"breakTime"}
                                     value={formData.breakTime.split(':')[1]}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({ target: { name: 'breakTime', value: `${formData.breakTime.split(':')[0]}:${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
@@ -302,9 +310,9 @@ const StoreInfo = () => {
                                 :
                                 <select
                                     className={"select-box"}
-                                    name={"endBreakTimeMinute"}
+                                    name={"endBreakTime"}
                                     value={formData.endBreakTime.split(':')[1]}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({ target: { name: 'endBreakTime', value: `${formData.endBreakTime.split(':')[0]}:${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
@@ -312,7 +320,7 @@ const StoreInfo = () => {
                             </>
                         </label>
                         <div>
-                            <label>휴일</label>
+                            <label className={"storeInfo-title"}>휴일</label>
                             {isEdit ? (
                                 <div className={"checkbox-group"}>
                                     {daysOfWeeks.map((day) => (
@@ -331,16 +339,15 @@ const StoreInfo = () => {
                             ) : (
                                 <span>{formData.holidays.join(", ")}</span>
                             )}
+                        </div>
                     </div>
+                    <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
+                        {isEdit ? "수정완료" : "수정하기"}
+                    </button>
+                </form>
+            </StoreAccording>
         </div>
-    <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
-        {isEdit ? "수정완료" : "수정하기"}
-    </button>
-</form>
-</StoreAccording>
-</div>
-)
-    ;
-}
+    );
+};
 
 export default StoreInfo;

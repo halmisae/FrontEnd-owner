@@ -11,7 +11,7 @@
 }
 
 .storeInfo-content div {
-    margin-bottom: 15px;
+    margin-bottom: 3px;
     width: 100%;
 }
 
@@ -19,6 +19,11 @@
     font-size: 1.2em;
     display: block;
     box-sizing: border-box;
+}
+
+.storeInfo-title {
+    font-size: 14px;
+    margin-top: 0;
 }
 
 .storeInfo-time {

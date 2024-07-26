@@ -18,7 +18,6 @@ const Login = () => {
         api2.get('/main')
             .then(response => {
                 setStores(response.data);
-                console.log(response.data)
             })
             .catch(error => {
                 console.error('Error fetching stores:', error);

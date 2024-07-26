@@ -4,12 +4,11 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "../scss/ReservationStatus.css";
 import api from "../api";
-import {useAuth} from "../AuthContext";
+import { useAuth } from "../AuthContext";
 
 const formatToLocalDateTime = (date) => {
     const dateObj = new Date(date);
-    const isoString = dateObj.toISOString();
-    return isoString;
+    return dateObj.toISOString();
 };
 
 const fetchReservationData = (storeNumber, today) => {
@@ -24,23 +23,24 @@ const fetchReservationData = (storeNumber, today) => {
 
 const ReservationStatus = () => {
     const [events, setEvents] = useState([]);
-    const storeNumber = selectedStore;
+    const { selectedStore } = useAuth();
     const today = formatToLocalDateTime(new Date());
     const navigate = useNavigate();
-    const {selectedStore} = useAuth();
 
     useEffect(() => {
-        fetchReservationData(storeNumber, today)
-            .then(data => {
-                const eventData = data
-                    .filter(reservation => reservation.reserveCount > 0)
-                    .map(reservation => ({
-                        title: `예약 ${reservation.reserveCount}건`,
-                        date: reservation.stringDate
-                    }));
-                setEvents(eventData);
-            });
-    }, []);
+        if (selectedStore) {
+            fetchReservationData(selectedStore, today)
+                .then(data => {
+                    const eventData = data
+                        .filter(reservation => reservation.reserveCount > 0)
+                        .map(reservation => ({
+                            title: `예약 ${reservation.reserveCount}건`,
+                            date: reservation.stringDate
+                        }));
+                    setEvents(eventData);
+                });
+        }
+    }, [selectedStore]);
 
     const handleEventClick = (clickInfo) => {
         const date = clickInfo.event.startStr;
@@ -56,8 +56,8 @@ const ReservationStatus = () => {
                     initialView={"dayGridMonth"}
                     weekends={true}
                     events={events}
-                    height={800}
-                    contentHeight={700}
+                    height={600}
+                    contentHeight={600}
                     eventClick={handleEventClick}
                 />
             </div>

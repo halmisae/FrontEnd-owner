@@ -57,6 +57,7 @@ const MenuListAdd = () => {
         }
 
         const data = {
+            selectedStore,
             menuNumber,
             menuName,
             introduction,

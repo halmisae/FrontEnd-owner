@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../scss/Processing.css';
 import api from "../api";
 import { useLocation } from 'react-router-dom';
+import {useAuth} from "../AuthContext";
 
 const ReservationDetail = () => {
     const [reservations, setReservations] = useState([]);
@@ -9,10 +10,11 @@ const ReservationDetail = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const date = queryParams.get("date");
+    const {selectedStore} = useAuth();
 
     useEffect(() => {
         if (date) {
-            api.get(`${api.getUri()}/schedule/daily?storeNumber=1&date=${encodeURIComponent(date)}`)
+            api.get(`${api.getUri()}/schedule/daily?storeNumber=${selectedStore}&date=${encodeURIComponent(date)}`)
                 .then(response => {
                     setReservations(response.data);
                 })

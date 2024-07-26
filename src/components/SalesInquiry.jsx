@@ -6,7 +6,7 @@ import icon1 from "../assets/back-space.png";
 import "../scss/SaleInquiry.css";
 import api from "../api";
 import { ToggleButton } from "react-bootstrap";
-import {useAuth} from "../AuthContext";
+import { useAuth } from "../AuthContext";
 
 const fetchData = (storeNumber, year, month) => {
     const formattedDate = new Date(year, month, 1).toISOString();
@@ -59,18 +59,19 @@ const SalesInquiry = () => {
     const [selectedMonth, setSelectedMonth] = useState(1);
     const [selectedYear] = useState(2024);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const storeNumber = 1;
-    const {selectStore} = useAuth();
+    const { selectedStore } = useAuth();
 
     useEffect(() => {
-        fetchData(selectStore, selectedYear, selectedMonth)
-            .then(fetchedData => {
-                setData(fetchedData);
-            })
-            .catch(error => {
-                setData([]);
-            });
-    }, [selectedMonth, selectedYear]);
+        if (selectedStore) {
+            fetchData(selectedStore, selectedYear, selectedMonth)
+                .then(fetchedData => {
+                    setData(fetchedData);
+                })
+                .catch(error => {
+                    setData([]);
+                });
+        }
+    }, [selectedStore, selectedMonth, selectedYear]);
 
     const handleMonthChange = (e) => {
         setSelectedMonth(Number(e.target.value));
@@ -157,7 +158,7 @@ const SalesInquiry = () => {
                             월
                         </label>
                         <ResponsiveContainer width="100%" height={650}>
-                        <LineChart
+                            <LineChart
                                 data={filteredData}
                                 margin={{
                                     top: 5, right: 30, left: 20, bottom: 5,
