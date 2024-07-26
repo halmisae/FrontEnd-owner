@@ -19,15 +19,15 @@ const ReservationProvider = ({ children }) => {
                     .catch(error => {
                         console.error('Error fetching reservations:', error);
                     });
-            }else {
+            } else {
                 setNewReservationsCount(0);
             }
         };
 
         fetchReservations();
-        const interval = setInterval(fetchReservations, 10000);
+        const interval = setInterval(fetchReservations, 5000);
         return () => clearInterval(interval);
-    }, [selectedStore]);
+    }, [selectedStore, isOperational]);
 
     return (
         <ReservationContext.Provider value={{ newReservationsCount }}>

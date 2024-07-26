@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ReservationContext } from "./ReservationContext"; // 추가된 부분
+import { ReservationContext } from "./ReservationContext";
 import icon1 from "./assets/power.png";
 import icon2 from "./assets/processing.png";
 import icon3 from "./assets/reservationstatus.png";
@@ -12,9 +12,18 @@ import { useAuth } from "./AuthContext";
 
 const Sidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isShaking, setIsShaking] = useState(false);
     const navigate = useNavigate();
     const { isLoggedIn, logout, isOperational, operationalIn, operationalOut } = useAuth();
     const { newReservationsCount } = useContext(ReservationContext);
+
+    useEffect(() => {
+        if (newReservationsCount > 0) {
+            setIsShaking(true);
+            const timer = setTimeout(() => setIsShaking(false), 500);
+            return () => clearTimeout(timer);
+        }
+    }, [newReservationsCount]);
 
     const handleToggle = () => {
         if (!isLoggedIn) {
@@ -60,7 +69,7 @@ const Sidebar = () => {
         <div className={"sidebar"}>
             <div className={"sidebar-content"}>
                 <Link to={"/processing"} onClick={(e) => handleProtectedLinkClick(e, "/processing")}>
-                    <div className={`icon-container ${newReservationsCount > 0 ? 'shake' : ''}`}>
+                    <div className={`icon-container ${isShaking ? 'shake' : ''}`}>
                         <img src={icon2} alt={"처리중"} />
                         {newReservationsCount > 0 && (
                             <span className="notification-badge">

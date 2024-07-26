@@ -22,7 +22,7 @@ const Processing = () => {
         };
 
         fetchReservations();
-        const interval = setInterval(fetchReservations, 10000);
+        const interval = setInterval(fetchReservations, 5000);
         return () => clearInterval(interval);
     }, []);
 
