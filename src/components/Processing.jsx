@@ -176,7 +176,7 @@ const Processing = () => {
                             <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
                                  className="reservation"
                                  onClick={() => handleReservationClick(reservation)}>
-                                <h3>{reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}</h3>
+                                <h3>{reservation.orderType === "CLOSING_ORDER" ? `마감할인 주문번호${reservation.orderNumber}` : `방문예약 주문번호${reservation.reserveNumber}`}</h3>
                                 <p>{renderReservationTime(reservation)}</p>
                                 <div>
                                     <Button variant={"success"} onClick={(e) => { e.stopPropagation(); handleComplete(reservation); }}>이용완료</Button>
