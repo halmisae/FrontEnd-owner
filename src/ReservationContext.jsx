@@ -6,11 +6,11 @@ const ReservationContext = createContext();
 
 const ReservationProvider = ({ children }) => {
     const [newReservationsCount, setNewReservationsCount] = useState(0);
-    const { selectedStore } = useAuth();
+    const { selectedStore, isOperational } = useAuth();
 
     useEffect(() => {
         const fetchReservations = () => {
-            if (selectedStore) {
+            if (selectedStore && isOperational) {
                 api.get(`${api.getUri()}/processing`, { params: { storeNumber: selectedStore } })
                     .then(response => {
                         const newReservations = response.data.filter(reservation => reservation.requestStatus === 'NOT_YET');
@@ -19,6 +19,8 @@ const ReservationProvider = ({ children }) => {
                     .catch(error => {
                         console.error('Error fetching reservations:', error);
                     });
+            }else {
+                setNewReservationsCount(0);
             }
         };
 

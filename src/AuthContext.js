@@ -5,7 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
     const [isOperational, setIsOperational] = useState(() => localStorage.getItem("isOperational") === "true");
-    const [selectedStore, setSelectedStore] = useState(() => localStorage.getItem("selectedStore") || ""); // 초기값 설정
+    const [selectedStore, setSelectedStore] = useState(() => localStorage.getItem("selectedStore") || "");
 
     const login = (storeNumber) => {
         setIsLoggedIn(true);
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setIsLoggedIn(false);
-        setSelectedStore(""); // 로그아웃 시 가게 정보 초기화
+        setSelectedStore("");
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("selectedStore");
     };

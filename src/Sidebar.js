@@ -14,7 +14,7 @@ const Sidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const { isLoggedIn, logout, isOperational, operationalIn, operationalOut } = useAuth();
-    const { newReservationsCount } = useContext(ReservationContext); // 컨텍스트에서 예약 수 가져오기
+    const { newReservationsCount } = useContext(ReservationContext);
 
     const handleToggle = () => {
         if (!isLoggedIn) {
