@@ -4,6 +4,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "../scss/ReservationStatus.css";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const formatToLocalDateTime = (date) => {
     const dateObj = new Date(date);
@@ -23,9 +24,10 @@ const fetchReservationData = (storeNumber, today) => {
 
 const ReservationStatus = () => {
     const [events, setEvents] = useState([]);
-    const storeNumber = 1;
+    const storeNumber = selectedStore;
     const today = formatToLocalDateTime(new Date());
     const navigate = useNavigate();
+    const {selectedStore} = useAuth();
 
     useEffect(() => {
         fetchReservationData(storeNumber, today)

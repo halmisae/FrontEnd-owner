@@ -1,6 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {ReservationContext} from "./ReservationContext";
+import { ReservationContext } from "./ReservationContext"; // 추가된 부분
 import icon1 from "./assets/power.png";
 import icon2 from "./assets/processing.png";
 import icon3 from "./assets/reservationstatus.png";
@@ -14,7 +14,7 @@ const Sidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const { isLoggedIn, logout, isOperational, operationalIn, operationalOut } = useAuth();
-    const {newReservationsCount} = useContext(ReservationContext);
+    const { newReservationsCount } = useContext(ReservationContext); // 컨텍스트에서 예약 수 가져오기
 
     const handleToggle = () => {
         if (!isLoggedIn) {
@@ -33,11 +33,11 @@ const Sidebar = () => {
             operationalOut();
             logout();
             navigate("/");
-            alert("영업을 종료했습니다.")
+            alert("영업을 종료했습니다.");
         } else {
             operationalIn();
             navigate("/processing");
-            alert("영업을 시작했습니다.")
+            alert("영업을 시작했습니다.");
         }
         setIsModalOpen(false);
     };

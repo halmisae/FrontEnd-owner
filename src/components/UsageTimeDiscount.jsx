@@ -4,18 +4,19 @@ import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storesale-edit.png";
 import "../scss/UsageTimeDiscount.css";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const UsageTimeDiscount = () => {
     const [formData, setFormData] = useState({
-        storeNumber: 0,
         discount: 0,
         unitTime: 0,
         usageTime: 0,
     });
+    const {selectedStore} = useAuth();
 
     useEffect(() => {
         api
-            .get("/unitTimeDiscount", { params: { storeNumber: 1 } })
+            .get("/unitTimeDiscount", { params: { storeNumber: selectedStore } })
             .then((response) => {
                 const data = response.data;
                 setFormData({

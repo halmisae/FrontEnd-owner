@@ -3,14 +3,16 @@ import '../scss/Processing.css';
 import api from "../api";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from "react-bootstrap/Button";
+import {useAuth} from "../AuthContext";
 
 const Processing = () => {
     const [reservations, setReservations] = useState([]);
     const [selectedReservation, setSelectedReservation] = useState(null);
+    const {selectedStore} = useAuth();
 
     useEffect(() => {
         const fetchReservations = () => {
-            api.get(`${api.getUri()}/processing`, { params: { storeNumber: 1 } })
+            api.get(`${api.getUri()}/processing`, { params: { storeNumber: selectedStore } })
                 .then(response => {
                     setReservations(response.data);
                 })

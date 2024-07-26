@@ -4,23 +4,23 @@ import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storesale-edit.png";
 import "../scss/UsageTimeDiscount.css";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const ClosingDiscount = () => {
   const [formData, setFormData] = useState({
-    storeNumber: 1,
     closingPrice: 0,
     quantity: 0,
     pickupTime: "00:00",
   });
   const [isEdit, setEdit] = useState(false);
+  const {selectedStore} = useAuth();
 
   useEffect(() => {
-    api.get("/closingDiscount", {params: {storeNumber: 1}})
+    api.get("/closingDiscount", {params: {storeNumber: selectedStore}})
         .then((response)=>{
           const data = response.data;
           const pickupTime = new Date(data.pickupTime).toISOString().split("T")[1].substring(0,5);
           setFormData({
-            storeNumber: data.storeNumber,
             closingPrice: data.closingPrice,
             quantity: data.quantity,
             pickupTime: pickupTime,

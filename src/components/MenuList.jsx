@@ -4,13 +4,14 @@ import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/menu-edit.png";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const MenuList = () => {
     const [menuList, setMenuList] = useState([]);
     const navigate = useNavigate();
-
+    const {selectedStore} = useAuth();
     useEffect(() => {
-        api.get("/menuList", { params: { storeNumber: 1 } })
+        api.get("/menuList", { params: { storeNumber: selectedStore } })
             .then((response) => {
                 setMenuList(response.data);
             })

@@ -5,6 +5,7 @@ import icon2 from "../assets/menu-edit.png";
 import StoreAccording from "./StoreAccording";
 import "../scss/MenuListAdd.css";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const MenuListAdd = () => {
     const location = useLocation();
@@ -16,7 +17,7 @@ const MenuListAdd = () => {
     const [imagePrevUrl, setImagePrevUrl] = useState(null);
     const [mode, setMode] = useState("add");
     const [menuNumber, setMenuNumber] = useState(null);
-    const [storeNumber] = useState("1");
+    const {selectedStore} = useAuth();
 
     useEffect(() => {
         const { state } = location;
@@ -57,7 +58,6 @@ const MenuListAdd = () => {
 
         const data = {
             menuNumber,
-            storeNumber,
             menuName,
             introduction,
             price

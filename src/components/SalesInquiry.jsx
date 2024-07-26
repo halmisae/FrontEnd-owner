@@ -6,6 +6,7 @@ import icon1 from "../assets/back-space.png";
 import "../scss/SaleInquiry.css";
 import api from "../api";
 import { ToggleButton } from "react-bootstrap";
+import {useAuth} from "../AuthContext";
 
 const fetchData = (storeNumber, year, month) => {
     const formattedDate = new Date(year, month, 1).toISOString();
@@ -59,9 +60,10 @@ const SalesInquiry = () => {
     const [selectedYear] = useState(2024);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const storeNumber = 1;
+    const {selectStore} = useAuth();
 
     useEffect(() => {
-        fetchData(storeNumber, selectedYear, selectedMonth)
+        fetchData(selectStore, selectedYear, selectedMonth)
             .then(fetchedData => {
                 setData(fetchedData);
             })

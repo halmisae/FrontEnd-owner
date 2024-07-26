@@ -3,22 +3,22 @@ import StoreAccording from "./StoreAccording";
 import icon1 from "../assets/storesale-edit.png";
 import icon2 from "../assets/store-setting-edit.png";
 import api from "../api";
+import {useAuth} from "../AuthContext";
 
 const ReservationDiscount = () => {
   const [discount, setDiscount] = useState({
     preorderDiscount: 1000,
-    storeNumber : 0
   });
   const [error, setError] =useState("");
   const [isEdit, setEdit] = useState(false);
+  const {selectedStore} = useAuth();
 
 
   useEffect(() => {
-    api.get("/preorderDiscount", {params: {storeNumber: 1}})
+    api.get("/preorderDiscount", {params: {storeNumber: selectedStore}})
         .then((response)=>{
           const data = response.data;
           setDiscount({
-            storeNumber: data.storeNumber,
             preorderDiscount: data.preorderDiscount,
           });
         })
