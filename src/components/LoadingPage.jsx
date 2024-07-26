@@ -5,9 +5,8 @@ import logo from "../assets/Logo.png"
 const LoadingPage = () => {
     return (
         <div className="loading-page">
-            <div className="spinner">
-                <img className={"logo"} src={logo} alt={"할미새"}/>
-            </div>
+            <div className="spinner"></div>
+            <img className={"logo"} src={logo} alt={"할미새"}/>
         </div>
     );
 };
