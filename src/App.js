@@ -17,11 +17,11 @@ import UsageTimeDiscount from "./components/UsageTimeDiscount";
 import ClosingDiscount from "./components/ClosingDiscount";
 import MenuListAdd from "./components/MenuListAdd";
 import Login from "./components/Login";
-import AddressSearch from "./components/AddressSearch";
 import "./App.css";
 import { AuthProvider } from "./AuthContext";
 import PrivateRoute from "./PrivateRoute";
 import ReservationDetail from "./components/ReservationDetail";
+import DaumPost from "./components/DaumPost";
 
 const App = () => {
     return (
@@ -50,7 +50,7 @@ const App = () => {
                                     <Route path={"/reservation-discount"} element={<ReservationDiscount />} />
                                     <Route path={"/usage-time-discount"} element={<UsageTimeDiscount />} />
                                     <Route path={"/closing-discount"} element={<ClosingDiscount />} />
-                                    <Route path={"/address-search"} element={<AddressSearch />} />
+                                    <Route element={<DaumPost />}/>
                                 </Route>
                             </Routes>
                         </div>

@@ -2,12 +2,16 @@ import React,{useState} from "react";
 import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storeinfo-edit.png";
 import StoreAccording from "./StoreAccording";
+import DaumPost from "./DaumPost";
 import "../scss/StoreInfo.css"
+import api from "../api";
 
 const StoreInfo = () => {
     const [formData,setFormData] = useState({
+        storeNumber: 1,
         storeName: "할미새",
         storeAddress: "경기도 **시 **구",
+        detailAddress: "",
         businessHour: "",
         endBusinessHour: "",
         weekBusinessHour: "",
@@ -23,8 +27,37 @@ const StoreInfo = () => {
         setFormData((prevState)=>({...prevState,[name]:value}));
     }
     const handleEditToggle =()=>{
-        setEdit((prevState)=>!prevState);
+        if (isEdit){
+            updateStoreInfo();
+        }
+        setEdit(prevState => !prevState);
     }
+    const updateStoreInfo = async () => {
+        const address = `${formData.storeAddress}${formData.detailAddress}`;
+        const quarryParams = new URLSearchParams({
+            storeNumber: formData.storeNumber,
+            storeName: formData.storeName,
+            address: address,
+            storePhone: formData.storePhone,
+            weekdayOpen: formData.businessHour,
+            weekdayClose: formData.endBusinessHour,
+            weekendOpen: formData.weekBusinessHour,
+            weekendClose: formData.weekEndBusinessHour,
+            breakStart: formData.breakTime,
+            breakEnd: formData.endBreakTime,
+            storeHoliday: formData.holidays.join(",")
+        }).toString();
+        try {
+            const response = await api.patch(`/information?${quarryParams}`,{},{
+                headers : {
+                    "Content-Type" : "application/json",
+                }
+            })
+        }
+        catch (error){
+            console.error("가게정보 업로드중 에러 발생: ", error);
+        }
+    };
     const renderHourOption =()=>{
         const options = [];
         for (let hour =1; hour <= 24; hour++){
@@ -49,23 +82,35 @@ const StoreInfo = () => {
         }
         return options;
     }
-    const holidayCheckBoxChange =(e)=>{
-        const {value,checked} = e.target;
-        setFormData((prevState) =>{
-            if (checked){
-                console.log({...prevState,holidays:[...prevState.holidays,value]})
-                return {...prevState,holidays:[...prevState.holidays,value]};
-            }else {
-                return {...prevState,holidays:prevState.holidays.filter((day)=>day !== value)}
+    const holidayCheckBoxChange = (e) => {
+        const { value, checked } = e.target;
+        const weekdays = {
+            "월요일": "MON",
+            "화요일": "TUE",
+            "수요일": "WED",
+            "목요일": "THU",
+            "금요일": "FRI",
+            "토요일": "SAT",
+            "일요일": "SUN"
+        };
+        setFormData((prevState) => {
+            if (checked) {
+                return { ...prevState, holidays: [...prevState.holidays, weekdays[value]] };
+            } else {
+                return { ...prevState, holidays: prevState.holidays.filter((day) => day !== weekdays[value]) };
             }
         });
-    }
+    };
     const daysOfWeeks=["월요일","화요일","수요일","목요일","금요일","토요일","일요일"];
-    return(
+
+    const setAddress = (address) => {
+        setFormData((prevState) => ({...prevState, storeAddress: address}));
+    };
+    return (
         <div className={"store-setting"}>
-            <StoreAccording icon={<img src={icon1} alt={"가게설정"} className={"according-icon"}/>} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
+            <StoreAccording icon={<img src={icon1} alt={"가게설정"} className={"according-icon"} />} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
             </StoreAccording>
-            <StoreAccording icon={<img src={icon2} alt={"가게정보수정"} className={"according-icon"}/>} title={"가게 정보수정"} isCollapsible alwaysVisible>
+            <StoreAccording icon={<img src={icon2} alt={"가게정보수정"} className={"according-icon"} />} title={"가게 정보수정"} isCollapsible alwaysVisible>
                 <form className={"storeInfo-content"}>
                     <div>
                         <label>상호명</label>
@@ -85,16 +130,36 @@ const StoreInfo = () => {
                     <div>
                         <label>가게 주소</label>
                         {isEdit ? (
-                            <input
-                                className={"input-box"}
-                                type={"text"}
-                                name={"storeAddress"}
-                                value={formData.storeAddress}
-                                onChange={handleChange}
-                                disabled={!isEdit}
-                            />
+                            <>
+                                <input
+                                    className={"input-box"}
+                                    type={"text"}
+                                    name={"storeAddress"}
+                                    value={formData.storeAddress}
+                                    onChange={handleChange}
+                                    disabled={true}
+                                />
+                                <DaumPost setAddress={setAddress} />
+                            </>
                         ) : (
                             <span>{formData.storeAddress}</span>
+                        )}
+                    </div>
+                    <div>
+                        <label>상세 주소</label>
+                        {isEdit ? (
+                            <>
+                                <input
+                                    className={"input-box"}
+                                    type={"text"}
+                                    name={"detailAddress"}
+                                    value={formData.detailAddress}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                />
+                            </>
+                        ):(
+                            <span>{formData.detailAddress}</span>
                         )}
                     </div>
                     <div>
@@ -246,30 +311,36 @@ const StoreInfo = () => {
                                 </select>
                             </>
                         </label>
-                        <label>휴무일</label>
-                        <div className={"checkbox-group"}>
-                            {daysOfWeeks.map((day) =>(
-                                <label key={day}>
-                                    <input
-                                        type={"checkbox"}
-                                        name={"holidays"}
-                                        value={day}
-                                        checked={formData.holidays.includes(day)}
-                                        onChange={holidayCheckBoxChange}
-                                        disabled={!isEdit}
-                                    />
-                                    {day}
-                                </label>
-                            ))}
-                        </div>
+                        <div>
+                            <label>휴일</label>
+                            {isEdit ? (
+                                <div className={"checkbox-group"}>
+                                    {daysOfWeeks.map((day) => (
+                                        <label key={day}>
+                                            <input
+                                                type={"checkbox"}
+                                                value={day}
+                                                checked={formData.holidays.includes(day)}
+                                                onChange={holidayCheckBoxChange}
+                                                disabled={!isEdit}
+                                            />
+                                            {day}
+                                        </label>
+                                    ))}
+                                </div>
+                            ) : (
+                                <span>{formData.holidays.join(", ")}</span>
+                            )}
                     </div>
-                    <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
-                        {isEdit ? "수정완료" : "수정하기"}
-                    </button>
-                </form>
-            </StoreAccording>
         </div>
-    )
+    <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
+        {isEdit ? "수정완료" : "수정하기"}
+    </button>
+</form>
+</StoreAccording>
+</div>
+)
+    ;
 }
 
 export default StoreInfo;

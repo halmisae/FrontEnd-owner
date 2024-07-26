@@ -6,7 +6,7 @@
 
 .reservation-bar {
     flex: 3;
-    height: 770px;
+    height: 100%;
     background-color: #2e2e2e;
     color: white;
     border-right: solid #444;
@@ -19,7 +19,7 @@
 .reservation-list {
     display: flex;
     flex-direction: column;
-    height: 40vh;
+    height: 100vh;
     overflow-y: auto;
     margin-bottom: 10px;
 }
@@ -54,7 +54,7 @@
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    height: auto;
+    height: 80%;
     box-sizing: border-box;
 }
 
