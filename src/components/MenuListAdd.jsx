@@ -88,62 +88,62 @@ const MenuListAdd = () => {
                 alwaysVisible={false}
             />
             <StoreAccording
-                icon={<img src={icon2} alt={"메뉴관리-메뉴추가"} className={"according-icon"} />}
+                icon={<img src={icon2} alt={"메뉴관리-메뉴추가"} className={"according-icon"}/>}
                 title={`메뉴 관리 - ${mode === "edit" ? "메뉴 수정" : "메뉴 추가"}`}
                 isCollapsible
                 alwaysVisible
             >
+                <h3>{mode === "edit" ? "메뉴 수정" : "메뉴 추가"}</h3>
                 <div className={"menu-add-container"}>
-                    <h2>{mode === "edit" ? "메뉴 수정" : "메뉴 추가"}</h2>
                     <form onSubmit={handleSubmit} className={"menu-add-form"}>
                         <div className={"form-left-div"}>
-                                <div className={"form-group"}>
-                                    <label>메뉴 이름</label>
-                                    <input
-                                        type={"text"}
-                                        value={menuName}
-                                        onChange={handleMenuNameChange}
-                                        required
-                                    />
-                                </div>
-                                <div className={"form-group"}>
-                                    <label>메뉴 설명</label>
-                                    <textarea
-                                        value={introduction}
-                                        onChange={handleMenuDescriptionChange}
-                                        required
-                                        minLength={10}
-                                        maxLength={100}
-                                    />
-                                </div>
-                                <div className={"form-group"}>
-                                    <label>가격 :</label>
-                                    <input
-                                        type={"number"}
-                                        value={price}
-                                        onChange={handlePriceChange}
-                                        required
-                                    />
-                                </div>
-                        </div>
-                        <div className={"form-right-div"}>
-                                <div className={"form-group"}>
-                                    <label>메뉴 사진 등록</label>
-                                    <input
-                                        type={"file"}
-                                        accept={"image/*"}
-                                        onChange={handleImageChange}
-                                        required={mode === "add"}
-                                    />
-                                </div>
-                                {imagePrevUrl && (
-                                    <div className={"image-preview"}>
-                                        <img src={imagePrevUrl} alt={"미리보기"}/>
-                                    </div>
-                                )}
+                            <div className={"form-group"}>
+                                <label>메뉴 이름</label>
+                                <input
+                                    type={"text"}
+                                    value={menuName}
+                                    onChange={handleMenuNameChange}
+                                    required
+                                />
+                            </div>
+                            <div className={"form-group"}>
+                                <label>메뉴 설명</label>
+                                <textarea
+                                    value={introduction}
+                                    onChange={handleMenuDescriptionChange}
+                                    required
+                                    minLength={10}
+                                    maxLength={100}
+                                />
+                            </div>
+                            <div className={"form-group"}>
+                                <label>가격 :</label>
+                                <input
+                                    type={"number"}
+                                    value={price}
+                                    onChange={handlePriceChange}
+                                    required
+                                />
+                            </div>
                         </div>
                         <button type={"submit"} className={"modal-button"}>{mode === "edit" ? "수정하기" : "추가하기"}</button>
                     </form>
+                    <div className={"form-right-div"}>
+                        <div className={"form-group"}>
+                            <label>메뉴 사진 등록</label>
+                            <input
+                                type={"file"}
+                                accept={"image/*"}
+                                onChange={handleImageChange}
+                                required={mode === "add"}
+                            />
+                        </div>
+                        {imagePrevUrl && (
+                            <div className={"image-preview"}>
+                                <img src={imagePrevUrl} alt={"미리보기"}/>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </StoreAccording>
         </div>

@@ -5,8 +5,6 @@ import "../scss/Login.css";
 import api2 from "../api2";
 
 const Login = () => {
-    const [userName, setUserName] = useState("");
-    const [passWord, setPassWord] = useState("");
     const [stores, setStores] = useState([]);
     const [selectedStore, setSelectedStore] = useState("");
     const { login } = useAuth();
@@ -39,24 +37,6 @@ const Login = () => {
             <div className="login-window">
                 <h1>로그인</h1>
                 <form onSubmit={handleSubmit}>
-                    <label className="login-label">
-                        아 이 디 :
-                        <input
-                            className="login-input"
-                            type="text"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                        />
-                    </label>
-                    <label className="login-label">
-                        비 밀 번 호 :
-                        <input
-                            className="login-input"
-                            type="password"
-                            value={passWord}
-                            onChange={(e) => setPassWord(e.target.value)}
-                        />
-                    </label>
                     <label className="login-label">
                         가 게 :
                         <select

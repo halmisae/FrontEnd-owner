@@ -1,6 +1,6 @@
 .menu-add-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 80%;
     margin: 0 auto;
     padding: 20px;

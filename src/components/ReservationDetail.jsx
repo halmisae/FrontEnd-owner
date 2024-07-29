@@ -32,21 +32,6 @@ const ReservationDetail = () => {
         }
     };
 
-    const handleAccept = (reserveNumber) => {
-        setReservations(prevReservations =>
-            prevReservations.map(reservation =>
-                reservation.reserveNumber === reserveNumber ? { ...reservation, requestStatus: 'PROCESSING' } : reservation
-            )
-        );
-        setSelectedReservation(null);
-        api.post('/api/accept', { reserveNumber })
-            .then(response => {
-            })
-            .catch(error => {
-                console.error('Error accepting reservation:', error);
-            });
-    };
-
     const handleReject = (reserveNumber) => {
         const reserveNumberCancel = reserveNumber.reserveMenu[0].reserveNumber;
 
@@ -65,18 +50,6 @@ const ReservationDetail = () => {
             });
     };
 
-    const handleComplete = (reserveNumber) => {
-        setReservations(prevReservations =>
-            prevReservations.filter(reservation => reservation.reserveNumber !== reserveNumber)
-        );
-        setSelectedReservation(null);
-        api.post('/api/complete', { reserveNumber })
-            .then(response => {
-            })
-            .catch(error => {
-                console.error('Error completing reservation:', error);
-            });
-    };
 
     return (
         <div className="processing-container">

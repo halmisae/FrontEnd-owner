@@ -1,32 +1,85 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storeinfo-edit.png";
 import StoreAccording from "./StoreAccording";
 import DaumPost from "./DaumPost";
 import "../scss/StoreInfo.css";
 import api from "../api";
-import {useAuth} from "../AuthContext";
+import { useAuth } from "../AuthContext";
+import Form from "react-bootstrap/Form";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Button from "react-bootstrap/Button";
+
+const weekdays = {
+    "월요일": "MON",
+    "화요일": "TUE",
+    "수요일": "WED",
+    "목요일": "THU",
+    "금요일": "FRI",
+    "토요일": "SAT",
+    "일요일": "SUN"
+};
 
 const StoreInfo = () => {
     const [formData, setFormData] = useState({
-        storeName: "할미새",
-        storeAddress: "경기도 **시 **구",
+        storeName: "",
+        storeAddress: "",
         detailAddress: "",
-        businessHour: "09:00",
-        endBusinessHour: "18:00",
-        weekBusinessHour: "10:00",
-        weekEndBusinessHour: "20:00",
-        breakTime: "13:00",
-        endBreakTime: "14:00",
-        storePhone: "031-***-****",
-        holidays: []
+        businessHour: "",
+        endBusinessHour: "",
+        weekBusinessHour: "",
+        weekEndBusinessHour: "",
+        breakTime: "",
+        endBreakTime: "",
+        storePhone: "",
+        holidays: [],
+        storeImage: null
     });
     const [isEdit, setEdit] = useState(false);
-    const {selectedStore} = useAuth();
+    const { selectedStore } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchStoreInfo = async () => {
+            try {
+                const response = await api.get(`/information?storeNumber=${selectedStore}`);
+                const data = response.data;
+
+                if (data) {
+                    setFormData({
+                        storeName: data.storeName || "",
+                        storeAddress: data.address.split(" ")[0] || "",
+                        detailAddress: data.address.split(" ")[1] || "",
+                        businessHour: data.weekdayOpen || "",
+                        endBusinessHour: data.weekdayClose || "",
+                        weekBusinessHour: data.weekendOpen || "",
+                        weekEndBusinessHour: data.weekendClose || "",
+                        breakTime: data.breakStart || "",
+                        endBreakTime: data.breakEnd || "",
+                        storePhone: data.storePhone || "",
+                        holidays: data.storeHoliday.map(day => weekdays[day] || "").filter(day => day),
+                        storeImage: data.storeImage || null
+                    });
+                }
+            } catch (error) {
+                console.error("가게정보 로드중 에러 발생: ", error);
+            }
+        };
+
+        fetchStoreInfo();
+    }, [selectedStore]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({ ...prevState, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData((prevState) => ({ ...prevState, storeImage: file }));
+        }
     };
 
     const handleEditToggle = () => {
@@ -38,25 +91,29 @@ const StoreInfo = () => {
 
     const updateStoreInfo = async () => {
         const address = `${formData.storeAddress} ${formData.detailAddress}`;
-        const queryParams = new URLSearchParams({
-            storeNumber: selectedStore,
-            storeName: formData.storeName,
-            address: address,
-            storePhone: formData.storePhone,
-            weekdayOpen: formData.businessHour,
-            weekdayClose: formData.endBusinessHour,
-            weekendOpen: formData.weekBusinessHour,
-            weekendClose: formData.weekEndBusinessHour,
-            breakStart: formData.breakTime,
-            breakEnd: formData.endBreakTime,
-            storeHoliday: formData.holidays.join(",")
-        }).toString();
+        const formDataToSend = new FormData();
+        formDataToSend.append("storeNumber", selectedStore);
+        formDataToSend.append("storeName", formData.storeName);
+        formDataToSend.append("address", address);
+        formDataToSend.append("storePhone", formData.storePhone);
+        formDataToSend.append("weekdayOpen", formData.businessHour);
+        formDataToSend.append("weekdayClose", formData.endBusinessHour);
+        formDataToSend.append("weekendOpen", formData.weekBusinessHour);
+        formDataToSend.append("weekendClose", formData.weekEndBusinessHour);
+        formDataToSend.append("breakStart", formData.breakTime);
+        formDataToSend.append("breakEnd", formData.endBreakTime);
+        formDataToSend.append("storeHoliday", formData.holidays.join(","));
+        if (formData.storeImage) {
+            formDataToSend.append("image", formData.storeImage);
+        }
+
         try {
-            await api.patch(`/information?${queryParams}`, {}, {
+            await api.patch(`/information?storeNumber=${selectedStore}`, formDataToSend, {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 }
             });
+            navigate("/store-info");
         } catch (error) {
             console.error("가게정보 업로드중 에러 발생: ", error);
         }
@@ -90,25 +147,17 @@ const StoreInfo = () => {
 
     const holidayCheckBoxChange = (e) => {
         const { value, checked } = e.target;
-        const weekdays = {
-            "월요일": "MON",
-            "화요일": "TUE",
-            "수요일": "WED",
-            "목요일": "THU",
-            "금요일": "FRI",
-            "토요일": "SAT",
-            "일요일": "SUN"
-        };
+        const selectedHoliday = weekdays[value];
         setFormData((prevState) => {
             if (checked) {
-                return { ...prevState, holidays: [...prevState.holidays, weekdays[value]] };
+                return { ...prevState, holidays: [...prevState.holidays, selectedHoliday] };
             } else {
-                return { ...prevState, holidays: prevState.holidays.filter((day) => day !== weekdays[value]) };
+                return { ...prevState, holidays: prevState.holidays.filter((day) => day !== selectedHoliday) };
             }
         });
     };
 
-    const daysOfWeeks = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+    const daysOfWeeks = Object.keys(weekdays);
 
     const setAddress = (address) => {
         setFormData((prevState) => ({ ...prevState, storeAddress: address }));
@@ -116,234 +165,91 @@ const StoreInfo = () => {
 
     return (
         <div className={"store-setting"}>
-            <StoreAccording icon={<img src={icon1} alt={"가게설정"} className={"according-icon"} />} title={"가게 설정"} isCollapsible={false} alwaysVisible={false}>
-            </StoreAccording>
-            <StoreAccording icon={<img src={icon2} alt={"가게정보수정"} className={"according-icon"} />} title={"가게 정보수정"} isCollapsible alwaysVisible>
+            <StoreAccording
+                icon={<img src={icon1} alt={"가게설정"} className={"according-icon"} />}
+                title={"가게 설정"}
+                isCollapsible={false}
+                alwaysVisible={false}
+            />
+            <StoreAccording
+                icon={<img src={icon2} alt={"가게정보수정"} className={"according-icon"} />}
+                title={"가게 정보수정"}
+                isCollapsible
+                alwaysVisible
+            >
                 <form className={"storeInfo-content"}>
                     <div>
-                        <label className={"storeInfo-title"}>상호명</label>
-                        {isEdit ? (
-                            <input
-                                className={"input-box"}
-                                type={"text"}
-                                name={"storeName"}
-                                value={formData.storeName}
+                        <FloatingLabel controlId="storeName" label="상호명" className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="상호명"
+                                name="storeName"
+                                value={formData.storeName || ""}
                                 onChange={handleChange}
                                 disabled={!isEdit}
                             />
-                        ) : (
-                            <span>{formData.storeName}</span>
-                        )}
+                        </FloatingLabel>
                     </div>
                     <div>
-                        <label className={"storeInfo-title"}>가게 주소</label>
-                        {isEdit ? (
-                            <>
-                                <input
-                                    className={"input-box"}
-                                    type={"text"}
-                                    name={"storeAddress"}
-                                    value={formData.storeAddress}
-                                    onChange={handleChange}
-                                    disabled={true}
-                                />
-                                <DaumPost setAddress={setAddress} />
-                            </>
-                        ) : (
-                            <span>{formData.storeAddress}</span>
-                        )}
+                        <FloatingLabel controlId="storeAddress" label="가게 주소" className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="가게 주소"
+                                name="storeAddress"
+                                value={formData.storeAddress || ""}
+                                onChange={handleChange}
+                                disabled={true}
+                            />
+                        </FloatingLabel>
+                        {isEdit && <DaumPost setAddress={setAddress} />}
                     </div>
                     <div>
-                        <label className={"storeInfo-title"}>상세 주소</label>
-                        {isEdit ? (
-                            <>
-                                <input
-                                    className={"input-box"}
-                                    type={"text"}
-                                    name={"detailAddress"}
-                                    value={formData.detailAddress}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                />
-                            </>
-                        ) : (
-                            <span>{formData.detailAddress}</span>
-                        )}
-                    </div>
-                    <div>
-                        <label className={"storeInfo-title"}>가게 전화번호</label>
-                        {isEdit ? (
-                            <input
-                                className={"input-box"}
-                                type={"text"}
-                                name={"storePhone"}
-                                value={formData.storePhone}
+                        <FloatingLabel controlId="detailAddress" label="상세 주소" className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="상세 주소"
+                                name="detailAddress"
+                                value={formData.detailAddress || ""}
                                 onChange={handleChange}
                                 disabled={!isEdit}
                             />
-                        ) : (
-                            <span>{formData.storePhone}</span>
-                        )}
+                        </FloatingLabel>
                     </div>
-                    <div className={"storeInfo-time"}>
-                        <label className={"storeInfo-title"}>영업시간</label>
-                        <label className={"storeInfo-title"}>평일 :
-                            <span className={"span-space"}> </span>
-                            <>
-                                <select
-                                    className={"select-box"}
-                                    name={"businessHour"}
-                                    value={formData.businessHour.split(':')[0]}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                >
-                                    {renderHourOption()}
-                                </select>
-                                :
-                                <select
-                                    className={"select-box"}
-                                    name={"businessHour"}
-                                    value={formData.businessHour.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}:${e.target.value}` } })}
-                                    disabled={!isEdit}
-                                >
-                                    {renderMinuteOption()}
-                                </select>
-                                <span className={"span-space"}>~</span>
-                                <select
-                                    className={"select-box"}
-                                    name={"endBusinessHour"}
-                                    value={formData.endBusinessHour.split(':')[0]}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                >
-                                    {renderHourOption()}
-                                </select>
-                                :
-                                <select
-                                    className={"select-box"}
-                                    name={"endBusinessHour"}
-                                    value={formData.endBusinessHour.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'endBusinessHour', value: `${formData.endBusinessHour.split(':')[0]}:${e.target.value}` } })}
-                                    disabled={!isEdit}
-                                >
-                                    {renderMinuteOption()}
-                                </select>
-                            </>
-                        </label>
-                        <label className={"storeInfo-title"}>주말 :
-                            <span className={"span-space"}> </span>
-                            <>
-                                <select
-                                    className={"select-box"}
-                                    name={"weekBusinessHour"}
-                                    value={formData.weekBusinessHour.split(':')[0]}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                >
-                                    {renderHourOption()}
-                                </select>
-                                :
-                                <select
-                                    className={"select-box"}
-                                    name={"weekBusinessHour"}
-                                    value={formData.weekBusinessHour.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'weekBusinessHour', value: `${formData.weekBusinessHour.split(':')[0]}:${e.target.value}` } })}
-                                    disabled={!isEdit}
-                                >
-                                    {renderMinuteOption()}
-                                </select>
-                                <span className={"span-space"}>~</span>
-                                <select
-                                    className={"select-box"}
-                                    name={"weekEndBusinessHour"}
-                                    value={formData.weekEndBusinessHour.split(':')[0]}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                >
-                                    {renderHourOption()}
-                                </select>
-                                :
-                                <select
-                                    className={"select-box"}
-                                    name={"weekEndBusinessHour"}
-                                    value={formData.weekEndBusinessHour.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'weekEndBusinessHour', value: `${formData.weekEndBusinessHour.split(':')[0]}:${e.target.value}` } })}
-                                    disabled={!isEdit}
-                                >
-                                    {renderMinuteOption()}
-                                </select>
-                            </>
-                        </label>
-                        <label className={"storeInfo-title"}>브레이크 타임 :
-                            <span className={"span-space"}> </span>
-                            <>
-                                <select
-                                    className={"select-box"}
-                                    name={"breakTime"}
-                                    value={formData.breakTime.split(':')[0]}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                >
-                                    {renderHourOption()}
-                                </select>
-                                :
-                                <select
-                                    className={"select-box"}
-                                    name={"breakTime"}
-                                    value={formData.breakTime.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'breakTime', value: `${formData.breakTime.split(':')[0]}:${e.target.value}` } })}
-                                    disabled={!isEdit}
-                                >
-                                    {renderMinuteOption()}
-                                </select>
-                                <span className={"span-space"}>~</span>
-                                <select
-                                    className={"select-box"}
-                                    name={"endBreakTime"}
-                                    value={formData.endBreakTime.split(':')[0]}
-                                    onChange={handleChange}
-                                    disabled={!isEdit}
-                                >
-                                    {renderHourOption()}
-                                </select>
-                                :
-                                <select
-                                    className={"select-box"}
-                                    name={"endBreakTime"}
-                                    value={formData.endBreakTime.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'endBreakTime', value: `${formData.endBreakTime.split(':')[0]}:${e.target.value}` } })}
-                                    disabled={!isEdit}
-                                >
-                                    {renderMinuteOption()}
-                                </select>
-                            </>
-                        </label>
-                        <div>
-                            <label className={"storeInfo-title"}>휴일</label>
-                            {isEdit ? (
-                                <div className={"checkbox-group"}>
-                                    {daysOfWeeks.map((day) => (
-                                        <label key={day}>
-                                            <input
-                                                type={"checkbox"}
-                                                value={day}
-                                                checked={formData.holidays.includes(day)}
-                                                onChange={holidayCheckBoxChange}
-                                                disabled={!isEdit}
-                                            />
-                                            {day}
-                                        </label>
-                                    ))}
+                    <div>
+                        <FloatingLabel controlId="storePhone" label="가게 전화번호" className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="가게 전화번호"
+                                name="storePhone"
+                                value={formData.storePhone || ""}
+                                onChange={handleChange}
+                                disabled={!isEdit}
+                            />
+                        </FloatingLabel>
+                    </div>
+                    <div>
+                        <FloatingLabel controlId="storeImage" label="가게 사진" className="mb-3">
+                            <Form.Control
+                                type="file"
+                                name="storeImage"
+                                onChange={handleFileChange}
+                                disabled={!isEdit}
+                            />
+                            {formData.storeImage && (
+                                <div className={"image-preview"}>
+                                    <img
+                                        src={URL.createObjectURL(formData.storeImage)}
+                                        alt={"미리보기"}
+                                        style={{ width: "200px", height: "auto" }}
+                                    />
                                 </div>
-                            ) : (
-                                <span>{formData.holidays.join(", ")}</span>
                             )}
-                        </div>
+                        </FloatingLabel>
                     </div>
-                    <button className={"modal-button"} type={"button"} onClick={handleEditToggle}>
-                        {isEdit ? "수정완료" : "수정하기"}
-                    </button>
+                    {/* Add other input fields similarly */}
+                    <Button variant="primary" onClick={handleEditToggle}>
+                        {isEdit ? "저장하기" : "수정하기"}
+                    </Button>
                 </form>
             </StoreAccording>
         </div>
