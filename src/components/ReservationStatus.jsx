@@ -49,7 +49,7 @@ const ReservationStatus = () => {
 
     return (
         <div className="reservation-status">
-            <h1>예약 현황</h1>
+            <h2>예약 현황</h2>
             <div className={"calendar-container"}>
                 <FullCalendar
                     plugins={[dayGridPlugin]}

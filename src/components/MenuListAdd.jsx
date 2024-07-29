@@ -58,14 +58,12 @@ const MenuListAdd = () => {
         }
 
         const formData = new FormData();
-        formData.append("selectedStore", selectedStore);
-        formData.append("menuNumber", menuNumber);
+        formData.append("storeNumber", selectedStore);
         formData.append("menuName", menuName);
         formData.append("introduction", introduction);
         formData.append("price", price);
         formData.append("image", image);
 
-        console.log(formData.getAll("image"));
         const apiCall = mode === "edit"
             ? api3.patch("/menuList/menu", formData)
             : api3.post("/menuList/menu", formData);
