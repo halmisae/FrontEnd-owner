@@ -59,6 +59,7 @@ const MenuListAdd = () => {
 
         const formData = new FormData();
         formData.append("storeNumber", selectedStore);
+        formData.append("menuNumber", menuNumber);
         formData.append("menuName", menuName);
         formData.append("introduction", introduction);
         formData.append("price", price);

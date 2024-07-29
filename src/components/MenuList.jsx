@@ -72,7 +72,7 @@ const MenuList = () => {
                             <span>{menu.menuName}</span>
                             <span>{menu.price}원</span>
                             <span>{menu.introduction}</span>
-                            <span><img src={menu.image} alt={"메뉴사진"} className={"according-icon"} /></span>
+                            <span><img src={menu.image} alt={"메뉴사진"} height={60} width={60}/></span>
                             <button onClick={() => handleEditClick(menu)}>수정</button>
                             <button onClick={() => handleDeleteClick(menu.menuNumber)}>삭제</button>
                         </div>
