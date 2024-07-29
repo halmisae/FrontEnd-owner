@@ -21,6 +21,8 @@ const weekdays = {
     "일요일": "SUN"
 };
 
+const daysOfWeeks = Object.keys(weekdays);
+
 const StoreInfo = () => {
     const [formData, setFormData] = useState({
         storeName: "",
@@ -157,8 +159,6 @@ const StoreInfo = () => {
         });
     };
 
-    const daysOfWeeks = Object.keys(weekdays);
-
     const setAddress = (address) => {
         setFormData((prevState) => ({ ...prevState, storeAddress: address }));
     };
@@ -235,21 +235,167 @@ const StoreInfo = () => {
                                 onChange={handleFileChange}
                                 disabled={!isEdit}
                             />
-                            {formData.storeImage && (
-                                <div className={"image-preview"}>
-                                    <img
-                                        src={URL.createObjectURL(formData.storeImage)}
-                                        alt={"미리보기"}
-                                        style={{ width: "200px", height: "auto" }}
-                                    />
-                                </div>
-                            )}
                         </FloatingLabel>
                     </div>
-                    {/* Add other input fields similarly */}
-                    <Button variant="primary" onClick={handleEditToggle}>
-                        {isEdit ? "저장하기" : "수정하기"}
-                    </Button>
+                    <div className={"storeInfo-time"}>
+                        <label className={"storeInfo-title"}>영업시간</label>
+                        <label className={"storeInfo-title"}>평일 :
+                            <span className={"span-space"}> </span>
+                            <>
+                                <select
+                                    className={"select-box"}
+                                    name={"businessHour"}
+                                    value={formData.businessHour.split(':')[0]}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                >
+                                    {renderHourOption()}
+                                </select>
+                                :
+                                <select
+                                    className={"select-box"}
+                                    name={"businessHour"}
+                                    value={formData.businessHour.split(':')[1]}
+                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}:${e.target.value}` } })}
+                                    disabled={!isEdit}
+                                >
+                                    {renderMinuteOption()}
+                                </select>
+                                <span className={"span-space"}>~</span>
+                                <select
+                                    className={"select-box"}
+                                    name={"endBusinessHour"}
+                                    value={formData.endBusinessHour.split(':')[0]}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                >
+                                    {renderHourOption()}
+                                </select>
+                                :
+                                <select
+                                    className={"select-box"}
+                                    name={"endBusinessHour"}
+                                    value={formData.endBusinessHour.split(':')[1]}
+                                    onChange={(e) => handleChange({ target: { name: 'endBusinessHour', value: `${formData.endBusinessHour.split(':')[0]}:${e.target.value}` } })}
+                                    disabled={!isEdit}
+                                >
+                                    {renderMinuteOption()}
+                                </select>
+                            </>
+                        </label>
+                        <label className={"storeInfo-title"}>주말 :
+                            <span className={"span-space"}> </span>
+                            <>
+                                <select
+                                    className={"select-box"}
+                                    name={"weekBusinessHour"}
+                                    value={formData.weekBusinessHour.split(':')[0]}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                >
+                                    {renderHourOption()}
+                                </select>
+                                :
+                                <select
+                                    className={"select-box"}
+                                    name={"weekBusinessHour"}
+                                    value={formData.weekBusinessHour.split(':')[1]}
+                                    onChange={(e) => handleChange({ target: { name: 'weekBusinessHour', value: `${formData.weekBusinessHour.split(':')[0]}:${e.target.value}` } })}
+                                    disabled={!isEdit}
+                                >
+                                    {renderMinuteOption()}
+                                </select>
+                                <span className={"span-space"}>~</span>
+                                <select
+                                    className={"select-box"}
+                                    name={"weekEndBusinessHour"}
+                                    value={formData.weekEndBusinessHour.split(':')[0]}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                >
+                                    {renderHourOption()}
+                                </select>
+                                :
+                                <select
+                                    className={"select-box"}
+                                    name={"weekEndBusinessHour"}
+                                    value={formData.weekEndBusinessHour.split(':')[1]}
+                                    onChange={(e) => handleChange({ target: { name: 'weekEndBusinessHour', value: `${formData.weekEndBusinessHour.split(':')[0]}:${e.target.value}` } })}
+                                    disabled={!isEdit}
+                                >
+                                    {renderMinuteOption()}
+                                </select>
+                            </>
+                        </label>
+                        <label className={"storeInfo-title"}>브레이크 타임 :
+                            <span className={"span-space"}> </span>
+                            <>
+                                <select
+                                    className={"select-box"}
+                                    name={"breakTime"}
+                                    value={formData.breakTime.split(':')[0]}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                >
+                                    {renderHourOption()}
+                                </select>
+                                :
+                                <select
+                                    className={"select-box"}
+                                    name={"breakTime"}
+                                    value={formData.breakTime.split(':')[1]}
+                                    onChange={(e) => handleChange({ target: { name: 'breakTime', value: `${formData.breakTime.split(':')[0]}:${e.target.value}` } })}
+                                    disabled={!isEdit}
+                                >
+                                    {renderMinuteOption()}
+                                </select>
+                                <span className={"span-space"}>~</span>
+                                <select
+                                    className={"select-box"}
+                                    name={"endBreakTime"}
+                                    value={formData.endBreakTime.split(':')[0]}
+                                    onChange={handleChange}
+                                    disabled={!isEdit}
+                                >
+                                    {renderHourOption()}
+                                </select>
+                                :
+                                <select
+                                    className={"select-box"}
+                                    name={"endBreakTime"}
+                                    value={formData.endBreakTime.split(':')[1]}
+                                    onChange={(e) => handleChange({ target: { name: 'endBreakTime', value: `${formData.endBreakTime.split(':')[0]}:${e.target.value}` } })}
+                                    disabled={!isEdit}
+                                >
+                                    {renderMinuteOption()}
+                                </select>
+                            </>
+                        </label>
+                        <div>
+                            <label className={"storeInfo-title"}>휴일</label>
+                            {isEdit ? (
+                                <div className={"checkbox-group"}>
+                                    {daysOfWeeks.map((day) => (
+                                        <Form.Check
+                                            key={day}
+                                            type={"checkbox"}
+                                            id={`holiday-${day}`}
+                                            label={day}
+                                            value={day}
+                                            checked={formData.holidays.includes(weekdays[day])}
+                                            onChange={holidayCheckBoxChange}
+                                            disabled={!isEdit}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <span>{daysOfWeeks.filter(day => formData.holidays.includes(weekdays[day])).join(", ")}</span>
+                            )}
+                        </div>
+                        <Button variant="primary" onClick={handleEditToggle}>
+                            {isEdit ? "저장하기" : "수정하기"}
+                        </Button>
+                    </div>
                 </form>
             </StoreAccording>
         </div>
