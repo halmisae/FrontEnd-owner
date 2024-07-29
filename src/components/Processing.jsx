@@ -131,7 +131,7 @@ const Processing = () => {
     const renderReservationTime = (reservation) => {
         const { orderType, reserveTime, visitTime, orderDate } = reservation;
         const time = orderType === "CLOSING_ORDER" ? orderDate : (orderType === "RESERVATION" ? visitTime : reserveTime);
-        return new Date(time[0], time[1] - 1, time[2], time[3], time[4], time[5]).toLocaleString();
+        return new Date(time[0], time[1] - 1, time[2], time[3], time[4]).toLocaleString();
     };
 
     const isToday = (dateArray) => {

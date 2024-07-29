@@ -4,8 +4,8 @@ import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/menu-edit.png";
 import StoreAccording from "./StoreAccording";
 import "../scss/MenuListAdd.css";
-import api from "../api";
-import {useAuth} from "../AuthContext";
+import { useAuth } from "../AuthContext";
+import api3 from "../api3";
 
 const MenuListAdd = () => {
     const location = useLocation();
@@ -13,11 +13,11 @@ const MenuListAdd = () => {
     const [menuName, setMenuName] = useState("");
     const [introduction, setIntroduction] = useState("");
     const [price, setPrice] = useState(0);
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(null);
     const [imagePrevUrl, setImagePrevUrl] = useState(null);
     const [mode, setMode] = useState("add");
     const [menuNumber, setMenuNumber] = useState(null);
-    const {selectedStore} = useAuth();
+    const { selectedStore } = useAuth();
 
     useEffect(() => {
         const { state } = location;
@@ -28,7 +28,7 @@ const MenuListAdd = () => {
                 setMenuName(state.menuName);
                 setIntroduction(state.menuDescription);
                 setPrice(state.price);
-                setImage(state.menuImage);
+                setImage(null);
                 setImagePrevUrl(state.menuImage);
             }
         }
@@ -41,9 +41,10 @@ const MenuListAdd = () => {
         const file = e.target.files[0];
         if (!file) return;
 
+        setImage(file);
+
         const reader = new FileReader();
         reader.onloadend = () => {
-            setImage(reader.result);
             setImagePrevUrl(reader.result);
         };
         reader.readAsDataURL(file);
@@ -56,17 +57,18 @@ const MenuListAdd = () => {
             return;
         }
 
-        const data = {
-            selectedStore,
-            menuNumber,
-            menuName,
-            introduction,
-            price
-        };
+        const formData = new FormData();
+        formData.append("selectedStore", selectedStore);
+        formData.append("menuNumber", menuNumber);
+        formData.append("menuName", menuName);
+        formData.append("introduction", introduction);
+        formData.append("price", price);
+        formData.append("image", image);
 
+        console.log(formData.getAll("image"));
         const apiCall = mode === "edit"
-            ? api.patch(`/menuList/menu`, data)
-            : api.post("/menuList/menu", data);
+            ? api3.patch("/menuList/menu", formData)
+            : api3.post("/menuList/menu", formData);
 
         apiCall
             .then(() => {
@@ -95,51 +97,51 @@ const MenuListAdd = () => {
                 <div className={"menu-add-container"}>
                     <h2>{mode === "edit" ? "메뉴 수정" : "메뉴 추가"}</h2>
                     <form onSubmit={handleSubmit} className={"menu-add-form"}>
-                        <div className={"form-left"}>
-                            <div className={"form-group"}>
-                                <label>메뉴 이름</label>
-                                <input
-                                    type={"text"}
-                                    value={menuName}
-                                    onChange={handleMenuNameChange}
-                                    required
-                                />
-                            </div>
-                            <div className={"form-group"}>
-                                <label>메뉴 설명</label>
-                                <textarea
-                                    value={introduction}
-                                    onChange={handleMenuDescriptionChange}
-                                    required
-                                    minLength={10}
-                                    maxLength={100}
-                                />
-                            </div>
-                            <div className={"form-group"}>
-                                <label>가격 :</label>
-                                <input
-                                    type={"number"}
-                                    value={price}
-                                    onChange={handlePriceChange}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className={"form-right"}>
-                            <div className={"form-group"}>
-                                <label>메뉴 사진 등록</label>
-                                <input
-                                    type={"file"}
-                                    accept={"image/*"}
-                                    onChange={handleImageChange}
-                                    required={mode === "add"}
-                                />
-                            </div>
-                            {imagePrevUrl && (
-                                <div className={"image-preview"}>
-                                    <img src={imagePrevUrl} alt={"미리보기"} />
+                        <div className={"form-left-div"}>
+                                <div className={"form-group"}>
+                                    <label>메뉴 이름</label>
+                                    <input
+                                        type={"text"}
+                                        value={menuName}
+                                        onChange={handleMenuNameChange}
+                                        required
+                                    />
                                 </div>
-                            )}
+                                <div className={"form-group"}>
+                                    <label>메뉴 설명</label>
+                                    <textarea
+                                        value={introduction}
+                                        onChange={handleMenuDescriptionChange}
+                                        required
+                                        minLength={10}
+                                        maxLength={100}
+                                    />
+                                </div>
+                                <div className={"form-group"}>
+                                    <label>가격 :</label>
+                                    <input
+                                        type={"number"}
+                                        value={price}
+                                        onChange={handlePriceChange}
+                                        required
+                                    />
+                                </div>
+                        </div>
+                        <div className={"form-right-div"}>
+                                <div className={"form-group"}>
+                                    <label>메뉴 사진 등록</label>
+                                    <input
+                                        type={"file"}
+                                        accept={"image/*"}
+                                        onChange={handleImageChange}
+                                        required={mode === "add"}
+                                    />
+                                </div>
+                                {imagePrevUrl && (
+                                    <div className={"image-preview"}>
+                                        <img src={imagePrevUrl} alt={"미리보기"}/>
+                                    </div>
+                                )}
                         </div>
                         <button type={"submit"} className={"modal-button"}>{mode === "edit" ? "수정하기" : "추가하기"}</button>
                     </form>

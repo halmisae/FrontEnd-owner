@@ -56,8 +56,8 @@ const ReservationStatus = () => {
                     initialView={"dayGridMonth"}
                     weekends={true}
                     events={events}
-                    height={600}
-                    contentHeight={600}
+                    height={650}
+                    contentHeight={650}
                     eventClick={handleEventClick}
                 />
             </div>

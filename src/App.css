@@ -1,7 +1,6 @@
 .app {
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 .main-content {
@@ -11,8 +10,8 @@
 
 .content {
     flex: 1;
-    height: 100%;
+    height: 94vh;
     padding: 0 0 0 0;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
