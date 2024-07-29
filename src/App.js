@@ -9,7 +9,6 @@ import ReservationStatus from './components/ReservationStatus';
 import StoreSettings from './components/StoreSettings';
 import TopBar from './components/TopBar';
 import StoreInfo from './components/StoreInfo';
-import OwnerInfo from './components/OwnerInfo';
 import WithDraw from './components/WithDraw';
 import MenuList from './components/MenuList';
 import ReservationDiscount from './components/ReservationDiscount';
@@ -51,7 +50,6 @@ const AppContent = () => {
                     <Route path="/sales" element={<SalesInquiry />} />
                     <Route path="/store-setting" element={<StoreSettings />} />
                     <Route path="/close-store" element={<CloseStore />} />
-                    <Route path="/owner-info" element={<OwnerInfo />} />
                     <Route path="/store-info" element={<StoreInfo />} />
                     <Route path="/withdraw" element={<WithDraw />} />
                     <Route path="/menu-list" element={<MenuList />} />
