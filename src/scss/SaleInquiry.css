@@ -7,6 +7,10 @@
     flex: 3;
 }
 
+.toggle-buttons {
+    width: 350px;
+}
+
 .sale-history {
     height: 80vh;
     overflow-y: auto;
@@ -16,4 +20,7 @@
 
 .sale-graph {
     flex: 7;
+    justify-content: center;
+    align-items: center;
+
 }

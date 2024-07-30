@@ -49,7 +49,6 @@ const Processing = () => {
                         : res
                 ));
                 setSelectedReservation(null);
-                console.log('Reservation accepted:', response);
             })
             .catch(error => {
                 console.error('Error accepting reservation:', error);
@@ -73,7 +72,6 @@ const Processing = () => {
                     (res.orderType === "CLOSING_ORDER" ? res.orderNumber : res.reserveNumber) !== id
                 ));
                 setSelectedReservation(null);
-                console.log('Reservation rejected:', response);
             })
             .catch(error => {
                 console.error('Error rejecting reservation:', error);
@@ -95,6 +93,7 @@ const Processing = () => {
             .then(response => {
                 setReservations(reservations.filter(res =>
                     (res.orderType === "CLOSING_ORDER" ? res.orderNumber : res.reserveNumber) !== id
+                    ? {...res, doneType: "COMPLETE"} : res
                 ));
                 setSelectedReservation(null);
                 console.log('Reservation completed:', response);
@@ -119,6 +118,7 @@ const Processing = () => {
             .then(response => {
                 setReservations(reservations.filter(res =>
                     (res.orderType === "CLOSING_ORDER" ? res.orderNumber : res.reserveNumber) !== id
+                    ? {...res, doneType: "NO_SHOW"} : res
                 ));
                 setSelectedReservation(null);
                 console.log('Reservation marked as no-show:', response);
@@ -146,7 +146,7 @@ const Processing = () => {
                 <div className="tab">
                     <h2>신규</h2>
                     <div className="reservation-list">
-                        {reservations.filter(reservation => reservation.requestStatus === "NOT_YET").map(reservation => (
+                        {reservations.filter(reservation => reservation.requestStatus === "NOT_YET" && reservation.doneType !== "OVER_TIME" && reservation.doneType !== "COMPLETE").map(reservation => (
                             <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
                                  className="reservation"
                                  onClick={() => handleReservationClick(reservation)}>
@@ -173,7 +173,7 @@ const Processing = () => {
                     <h2>진행중</h2>
                     <div className="reservation-list">
                         {reservations.filter(reservation =>
-                            reservation.requestStatus === "ACCEPT" && isToday(reservation.orderType === "CLOSING_ORDER" ? reservation.orderDate : reservation.visitTime)
+                            reservation.requestStatus === "ACCEPT" && isToday(reservation.orderType === "CLOSING_ORDER" ? reservation.orderDate : reservation.visitTime) && reservation.doneType === "NOT_YET"
                         ).map(reservation => (
                             <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
                                  className="reservation"

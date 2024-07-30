@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import StoreAccording from "./StoreAccording";
-import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storesale-edit.png";
 import "../scss/UsageTimeDiscount.css";
 import api from "../api";

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../scss/Processing.css';
 import api from "../api";
 import { useLocation } from 'react-router-dom';
-import {useAuth} from "../AuthContext";
+import { useAuth } from "../AuthContext";
 
 const ReservationDetail = () => {
     const [reservations, setReservations] = useState([]);
@@ -10,13 +10,14 @@ const ReservationDetail = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const date = queryParams.get("date");
-    const {selectedStore} = useAuth();
+    const { selectedStore } = useAuth();
 
     useEffect(() => {
         if (date) {
             api.get(`${api.getUri()}/schedule/daily?storeNumber=${selectedStore}&date=${encodeURIComponent(date)}`)
                 .then(response => {
                     setReservations(response.data);
+                    console.log(response.data)
                 })
                 .catch(error => {
                     console.error("Error fetching reservation: ", error);
@@ -36,12 +37,12 @@ const ReservationDetail = () => {
         const reserveNumberCancel = reserveNumber.reserveMenu[0].reserveNumber;
 
         api.put(`${api.getUri()}/schedule/daily/reservation/cancel`, null, {
-            params: {reserveNumber: reserveNumberCancel}
+            params: { reserveNumber: reserveNumberCancel }
         })
             .then(response => {
                 console.log("예약 취소가 완료되었습니다.", response.data);
                 setReservations(prevState =>
-                    prevState.filter(reservations => reservations.reserveMenu[0].reserveNumber !== reserveNumberCancel)
+                    prevState.filter(reservation => reservation.reserveMenu[0].reserveNumber !== reserveNumberCancel)
                 );
                 setSelectedReservation(null);
             })
@@ -49,7 +50,6 @@ const ReservationDetail = () => {
                 console.error("예약 취소중 에러 발생", error);
             });
     };
-
 
     return (
         <div className="processing-container">
@@ -73,7 +73,7 @@ const ReservationDetail = () => {
             <div className="main">
                 {selectedReservation ? (
                     <div className="reservation-details">
-                        <h2>예약 {selectedReservation.reserveNumber}</h2>
+                        <h2>예약 {selectedReservation.reserveMenu[0].reserveNumber}번</h2>
                         <p>예약 일시: {new Date(selectedReservation.visitTime[0], selectedReservation.visitTime[1] - 1, selectedReservation.visitTime[2], selectedReservation.visitTime[3], selectedReservation.visitTime[4], selectedReservation.visitTime[5]).toLocaleString()}</p>
                         <p>인원: {selectedReservation.people}</p>
                         <p>총액: {selectedReservation.totalPrice}원</p>
@@ -90,9 +90,11 @@ const ReservationDetail = () => {
                             </ul>
                         </div>
                         <div className="accept-buttons">
-                            <>
+                            {selectedReservation.doneType === 'OVER_TIME' || selectedReservation.doneType === 'COMPLETE' ? (
+                                <h3>예약 및 결제완료</h3>
+                            ) : (
                                 <button onClick={() => handleReject(selectedReservation)}>취소</button>
-                            </>
+                            )}
                         </div>
                     </div>
                 ) : (

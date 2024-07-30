@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import StoreAccording from "./StoreAccording";
 import icon1 from "../assets/storesale-edit.png";
-import icon2 from "../assets/store-setting-edit.png";
 import api from "../api";
 import {useAuth} from "../AuthContext";
 
@@ -46,7 +45,7 @@ const ReservationDiscount = () => {
       setError("할인 금액의 끝 3자리 수는 000으로 끝나야 합니다.");
     }else {
       try {
-        api.post("/preorderDiscount", {...discount})
+        api.post("/preorderDiscount", {...discount, storeNumber:selectedStore})
             .then((response)=>{
               setEdit(false);
             })

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import StoreAccording from "./StoreAccording";
-import icon1 from "../assets/store-setting-edit.png";
 import icon2 from "../assets/storesale-edit.png";
 import "../scss/UsageTimeDiscount.css";
 import api from "../api";
@@ -8,6 +7,7 @@ import {useAuth} from "../AuthContext";
 
 const ClosingDiscount = () => {
   const [formData, setFormData] = useState({
+    storeNumber: 0,
     closingPrice: 0,
     quantity: 0,
     pickupTime: "00:00",
@@ -21,6 +21,7 @@ const ClosingDiscount = () => {
           const data = response.data;
           const pickupTime = new Date(data.pickupTime).toISOString().split("T")[1].substring(0,5);
           setFormData({
+            storeNumber: selectedStore,
             closingPrice: data.closingPrice,
             quantity: data.quantity,
             pickupTime: pickupTime,
@@ -51,7 +52,7 @@ const ClosingDiscount = () => {
     const currentDate = new Date().toISOString().split("T")[0];
     const formattedPickupTime = `${currentDate}T${formData.pickupTime}`;
 
-    api.post('/closingDiscount', { ...formData, pickupTime: formattedPickupTime })
+    api.post(`/closingDiscount`, { ...formData, pickupTime: formattedPickupTime, storeNumber: selectedStore })
         .then((response) => {
           setEdit(false);
         })

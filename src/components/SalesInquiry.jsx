@@ -5,7 +5,7 @@ import {
 import icon1 from "../assets/back-space.png";
 import "../scss/SaleInquiry.css";
 import api from "../api";
-import { ToggleButton } from "react-bootstrap";
+import { ToggleButton,Card } from "react-bootstrap";
 import { useAuth } from "../AuthContext";
 
 const fetchData = (storeNumber, year, month) => {
@@ -95,32 +95,28 @@ const SalesInquiry = () => {
     };
 
     const renderOrderDetails = (order) => {
-        if (order.orderType === "CLOSING_ORDER") {
-            return (
-                <div>
-                    <h4>주문 상세정보</h4>
-                    <p>주문번호: {order.orderNumber}</p>
+        const orderDate = order.visitTime
+            ? new Date(order.visitTime[0], order.visitTime[1] - 1, order.visitTime[2], order.visitTime[3], order.visitTime[4]).toLocaleString()
+            : new Date(order.orderDate[0], order.orderDate[1] - 1, order.orderDate[2], order.orderDate[3], order.orderDate[4]).toLocaleString();
+
+        return (
+            <Card>
+                <Card.Header>
+                    주문번호: {order.orderType === "CLOSING_ORDER" ? order.orderNumber : order.reserveNumber}
+                </Card.Header>
+                <Card.Body>
                     <p>결제금액: {order.totalPrice}원</p>
                     <p>주문유형: {order.orderType}</p>
-                    <p>수량: {order.quantity}</p>
-                    <p>주문일자: {new Date(order.orderDate[0], order.orderDate[1] - 1, order.orderDate[2]).toISOString().split('T')[0]}</p>
+                    <p>메뉴: {order.menuDTO[0].menuName}</p>
+                    <p>수량: {order.orderType === "CLOSING_ORDER" ? order.quantity : order.people}</p>
+                    {order.orderType === "RESERVATION" && <p>이용시간: {order.useTime}분</p>}
+                </Card.Body>
+                <Card.Footer>
+                    <p>주문일자: {orderDate}</p>
                     <img src={icon1} alt={"뒤로가기"} className={"back-icon"} onClick={handleBackToGraph} />
-                </div>
-            );
-        } else if (order.orderType === "RESERVATION") {
-            return (
-                <div>
-                    <h4>주문 상세정보</h4>
-                    <p>주문번호: {order.reserveNumber}</p>
-                    <p>결제금액: {order.totalPrice}원</p>
-                    <p>주문유형: {order.orderType}</p>
-                    <p>수량: {order.people}</p>
-                    <p>이용시간: {order.useTime}분</p>
-                    <p>주문일자: {new Date(order.visitTime[0], order.visitTime[1] - 1, order.visitTime[2]).toISOString().split('T')[0]}</p>
-                    <img src={icon1} alt={"뒤로가기"} className={"back-icon"} onClick={handleBackToGraph} />
-                </div>
-            );
-        }
+                </Card.Footer>
+            </Card>
+        );
     };
 
     return (
@@ -134,6 +130,7 @@ const SalesInquiry = () => {
                                 id={`radio-${order.orderType}-${order.orderType === "CLOSING_ORDER" ? order.orderNumber : order.reserveNumber}`}
                                 variant={"outline-secondary"}
                                 size={"sm"}
+                                className={"toggle-buttons"}
                                 value={order.orderType === "CLOSING_ORDER" ? order.orderNumber : order.reserveNumber}
                                 onClick={() => handleOrderClick(order)}
                             >
