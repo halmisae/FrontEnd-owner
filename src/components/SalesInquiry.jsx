@@ -100,7 +100,7 @@ const SalesInquiry = () => {
             : new Date(order.orderDate[0], order.orderDate[1] - 1, order.orderDate[2], order.orderDate[3], order.orderDate[4]).toLocaleString();
 
         return (
-            <Card>
+            <Card className={"salesCard"}>
                 <Card.Header>
                     주문번호: {order.orderType === "CLOSING_ORDER" ? order.orderNumber : order.reserveNumber}
                 </Card.Header>
@@ -123,6 +123,14 @@ const SalesInquiry = () => {
         <div className={"sale-container"}>
             <div className={"sale-history-div"}>
                 <h3>주문기록</h3>
+                <label>
+                    <select value={selectedMonth} onChange={handleMonthChange}>
+                        {Array.from({length: 12}, (_, i) => (
+                            <option key={i + 1} value={i + 1}>{i + 1}</option>
+                        ))}
+                    </select>
+                    월
+                </label>
                 <ul className={"sale-history"}>
                     {monthlyOrders.map((order) => (
                         <li key={`${order.orderType}-${order.orderType === "CLOSING_ORDER" ? order.orderNumber : order.reserveNumber}`}>
@@ -146,14 +154,6 @@ const SalesInquiry = () => {
                     renderOrderDetails(selectedOrder)
                 ) : (
                     <>
-                        <label>
-                            <select value={selectedMonth} onChange={handleMonthChange}>
-                                {Array.from({length: 12}, (_, i) => (
-                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                ))}
-                            </select>
-                            월
-                        </label>
                         <ResponsiveContainer width="100%" height={650}>
                             <LineChart
                                 data={filteredData}

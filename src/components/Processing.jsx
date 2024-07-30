@@ -4,6 +4,7 @@ import api from "../api";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from "react-bootstrap/Button";
 import {useAuth} from "../AuthContext";
+import {Card, ListGroup} from "react-bootstrap";
 
 const Processing = () => {
     const [reservations, setReservations] = useState([]);
@@ -22,7 +23,7 @@ const Processing = () => {
         };
 
         fetchReservations();
-        const interval = setInterval(fetchReservations, 5000);
+        const interval = setInterval(fetchReservations, 3000);
         return () => clearInterval(interval);
     }, []);
 
@@ -147,9 +148,10 @@ const Processing = () => {
                     <h2>신규</h2>
                     <div className="reservation-list">
                         {reservations.filter(reservation => reservation.requestStatus === "NOT_YET" && reservation.doneType !== "OVER_TIME" && reservation.doneType !== "COMPLETE").map(reservation => (
-                            <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
-                                 className="reservation"
-                                 onClick={() => handleReservationClick(reservation)}>
+                            <div
+                                key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
+                                className="reservation"
+                                onClick={() => handleReservationClick(reservation)}>
                                 <h3>{reservation.orderType === "CLOSING_ORDER" ? `마감할인 주문번호${reservation.orderNumber}` : `방문예약 주문번호${reservation.reserveNumber}`}</h3>
                                 <p>{renderReservationTime(reservation)}</p>
                                 <p>{reservation.orderType === "CLOSING_ORDER" ? "수량" : "인원수"}: {reservation.people || reservation.quantity}</p>
@@ -175,14 +177,21 @@ const Processing = () => {
                         {reservations.filter(reservation =>
                             reservation.requestStatus === "ACCEPT" && isToday(reservation.orderType === "CLOSING_ORDER" ? reservation.orderDate : reservation.visitTime) && reservation.doneType === "NOT_YET"
                         ).map(reservation => (
-                            <div key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
-                                 className="reservation"
-                                 onClick={() => handleReservationClick(reservation)}>
+                            <div
+                                key={reservation.orderType === "CLOSING_ORDER" ? reservation.orderNumber : reservation.reserveNumber}
+                                className="reservation"
+                                onClick={() => handleReservationClick(reservation)}>
                                 <h3>{reservation.orderType === "CLOSING_ORDER" ? `마감할인 주문번호${reservation.orderNumber}` : `방문예약 주문번호${reservation.reserveNumber}`}</h3>
                                 <p>{renderReservationTime(reservation)}</p>
                                 <div>
-                                    <Button variant={"success"} onClick={(e) => { e.stopPropagation(); handleComplete(reservation); }}>이용완료</Button>
-                                    <Button variant={"danger"} onClick={(e) => { e.stopPropagation(); handleNoShow(reservation); }}>노쇼</Button>
+                                    <Button variant={"success"} onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleComplete(reservation);
+                                    }}>이용완료</Button>
+                                    <Button variant={"danger"} onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleNoShow(reservation);
+                                    }}>노쇼</Button>
                                 </div>
                             </div>
                         ))}
@@ -191,35 +200,67 @@ const Processing = () => {
             </div>
             <div className="main">
                 {selectedReservation && (
-                    <div className="reservation-details">
-                        <h2>{selectedReservation.orderType === "CLOSING_ORDER" ? `마감할인 주문 ${selectedReservation.orderNumber}` : `방문예약 ${selectedReservation.reserveNumber}`}</h2>
-                        <p>{selectedReservation.orderType === "CLOSING_ORDER" ? `픽업 시간: ${renderReservationTime(selectedReservation)}` : `방문 일시: ${renderReservationTime(selectedReservation)}`}</p>
-                        <p>{selectedReservation.orderType === "CLOSING_ORDER" ? `수량: ${selectedReservation.quantity}` : `인원: ${selectedReservation.people}`}</p>
-                        <p>총액: {selectedReservation.totalPrice}원</p>
-                        <>
-                            <p>이용시간: {selectedReservation.useTime}분</p>
-                            <div className="menu-section">
-                                <h4>{selectedReservation.orderType === "CLOSING_ORDER" ? "" : "메뉴 목록"}</h4>
-                                <ul>
-                                    {selectedReservation.menuDTO && selectedReservation.menuDTO.map((menuItem, index) => (
-                                        <li key={index}>{menuItem.menuName} x {menuItem.quantity}</li>
-                                    ))}
-                                </ul>
-                                <div>
-                                    <Button variant={"primary"} size={"lg"} onClick={(e) => {
+                    <Card className="reservation-details">
+                        <Card.Header>
+                            <h2>
+                                {selectedReservation.orderType === "CLOSING_ORDER"
+                                    ? `마감할인 주문 ${selectedReservation.orderNumber}`
+                                    : `방문예약 ${selectedReservation.reserveNumber}`}
+                            </h2>
+                        </Card.Header>
+                        <Card.Body>
+                            <Card.Text>
+                                {selectedReservation.orderType === "CLOSING_ORDER"
+                                    ? `픽업 시간: ${renderReservationTime(selectedReservation)}`
+                                    : `방문 일시: ${renderReservationTime(selectedReservation)}`}
+                                <br/>
+                                {selectedReservation.orderType === "CLOSING_ORDER"
+                                    ? `수량: ${selectedReservation.quantity}`
+                                    : `인원: ${selectedReservation.people}`}
+                                <br/>
+                                총액: {selectedReservation.totalPrice}원
+                                <br/>
+                                {selectedReservation.orderType === "CLOSING_ORDER" ? "" : `이용시간: ${selectedReservation.useTime}분`}
+                            </Card.Text>
+                            {selectedReservation.menuDTO && (
+                                <>
+                                    <Card.Title>{selectedReservation.orderType === "CLOSING_ORDER" ? "" : "메뉴 목록"}</Card.Title>
+                                    <ListGroup>
+                                        {selectedReservation.menuDTO.map((menuItem, index) => (
+                                            <ListGroup.Item key={index}>
+                                                {menuItem.menuName} x {menuItem.quantity}
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                                </>
+                            )}
+                        </Card.Body>
+                        <Card.Footer>
+                            <div className="d-flex justify-content-end">
+                                <Button
+                                    variant="primary"
+                                    size="lg"
+                                    onClick={(e) => {
                                         e.stopPropagation();
                                         handleAccept(selectedReservation);
-                                    }}>{selectedReservation.requestStatus === "ACCEPT" ? "이용완료" : "수락"}
-                                    </Button>
-                                    <Button variant={"danger"} size={"lg"} onClick={(e) => {
+                                    }}
+                                >
+                                    {selectedReservation.requestStatus === "ACCEPT" ? "이용완료" : "수락"}
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    size="lg"
+                                    className="ms-2"
+                                    onClick={(e) => {
                                         e.stopPropagation();
                                         handleReject(selectedReservation);
-                                    }}>{selectedReservation.requestStatus === "ACCEPT" ? "노쇼" : "거절"}
-                                    </Button>
-                                </div>
+                                    }}
+                                >
+                                    {selectedReservation.requestStatus === "ACCEPT" ? "노쇼" : "거절"}
+                                </Button>
                             </div>
-                        </>
-                    </div>
+                        </Card.Footer>
+                    </Card>
                 )}
             </div>
         </div>

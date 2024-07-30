@@ -3,6 +3,8 @@ import '../scss/Processing.css';
 import api from "../api";
 import { useLocation } from 'react-router-dom';
 import { useAuth } from "../AuthContext";
+import {Card, ListGroup} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 const ReservationDetail = () => {
     const [reservations, setReservations] = useState([]);
@@ -56,7 +58,7 @@ const ReservationDetail = () => {
             <div className="reservation-bar">
                 <div className="tab">
                     <h2>예약중</h2>
-                    <div className="reservation-list">
+                    <div className="reservation-detail-list">
                         {reservations.length === 0 ? (
                             <p>해당 날짜에 예약이 없습니다.</p>
                         ) : (
@@ -72,31 +74,35 @@ const ReservationDetail = () => {
             </div>
             <div className="main">
                 {selectedReservation ? (
-                    <div className="reservation-details">
-                        <h2>예약 {selectedReservation.reserveMenu[0].reserveNumber}번</h2>
-                        <p>예약 일시: {new Date(selectedReservation.visitTime[0], selectedReservation.visitTime[1] - 1, selectedReservation.visitTime[2], selectedReservation.visitTime[3], selectedReservation.visitTime[4], selectedReservation.visitTime[5]).toLocaleString()}</p>
-                        <p>인원: {selectedReservation.people}</p>
-                        <p>총액: {selectedReservation.totalPrice}원</p>
-                        <p>이용시간: {selectedReservation.useTime}분</p>
-                        <div className="menu-section">
-                            <h4>메뉴 목록</h4>
-                            <ul>
+                    <Card className={"detail-card"}>
+                        <Card.Header>예약 {selectedReservation.reserveMenu[0].reserveNumber}번</Card.Header>
+                        <Card.Body>
+                            <Card.Text>
+                                <p>예약 일시: {new Date(selectedReservation.visitTime[0], selectedReservation.visitTime[1] - 1, selectedReservation.visitTime[2], selectedReservation.visitTime[3], selectedReservation.visitTime[4], selectedReservation.visitTime[5]).toLocaleString()}</p>
+                                <p>인원: {selectedReservation.people}</p>
+                                <p>총액: {selectedReservation.totalPrice}원</p>
+                                <p>이용시간: {selectedReservation.useTime}분</p>
+                            </Card.Text>
+                            <Card.Title>메뉴 목록</Card.Title>
+                            <ListGroup>
                                 {selectedReservation.reserveMenu.map((menuItem, index) => {
                                     const menuDetails = selectedReservation.menu.find(menu => menu.menuNumber === menuItem.menuNumber);
                                     return (
-                                        <li key={index}>{menuDetails ? menuDetails.menuName : 'Unknown'} x {menuItem.quantity}</li>
+                                        <ListGroup.Item key={index}>
+                                            {menuDetails ? menuDetails.menuName : 'Unknown'} x {menuItem.quantity}
+                                        </ListGroup.Item>
                                     );
                                 })}
-                            </ul>
-                        </div>
-                        <div className="accept-buttons">
-                            {selectedReservation.doneType === 'OVER_TIME' || selectedReservation.doneType === 'COMPLETE' ? (
-                                <h3>예약 및 결제완료</h3>
-                            ) : (
-                                <button onClick={() => handleReject(selectedReservation)}>취소</button>
-                            )}
-                        </div>
-                    </div>
+                            </ListGroup>
+                            <div className="d-flex justify-content-end mt-3">
+                                {selectedReservation.doneType === 'OVER_TIME' || selectedReservation.doneType === 'COMPLETE' ? (
+                                    <h3>예약 및 결제완료</h3>
+                                ) : (
+                                    <Button variant="danger" onClick={() => handleReject(selectedReservation)}>취소</Button>
+                                )}
+                            </div>
+                        </Card.Body>
+                    </Card>
                 ) : (
                     <p>예약을 선택하세요.</p>
                 )}

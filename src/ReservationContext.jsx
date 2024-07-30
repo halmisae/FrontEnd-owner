@@ -25,7 +25,7 @@ const ReservationProvider = ({ children }) => {
         };
 
         fetchReservations();
-        const interval = setInterval(fetchReservations, 5000);
+        const interval = setInterval(fetchReservations, 3000);
         return () => clearInterval(interval);
     }, [selectedStore, isOperational]);
 
