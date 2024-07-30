@@ -256,7 +256,7 @@ const StoreInfo = () => {
                                     className={"select-box"}
                                     name={"businessHour"}
                                     value={formData.businessHour.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}:${e.target.value}` } })}
+                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
