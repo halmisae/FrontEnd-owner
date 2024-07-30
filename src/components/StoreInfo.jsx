@@ -53,14 +53,14 @@ const StoreInfo = () => {
                         storeName: data.storeName || "",
                         storeAddress: data.address,
                         detailAddress: data.addressDetail,
-                        businessHour: data.weekdayOpen || "",
-                        endBusinessHour: data.weekdayClose || "",
-                        weekBusinessHour: data.weekendOpen || "",
-                        weekEndBusinessHour: data.weekendClose || "",
-                        breakTime: data.breakStart || "",
-                        endBreakTime: data.breakEnd || "",
-                        storePhone: data.storePhone || "",
-                        holidays: data.storeHoliday.map(day => weekdays[day] || "").filter(day => day),
+                        businessHour: data.weekdayOpen,
+                        endBusinessHour: data.weekdayClose,
+                        weekBusinessHour: data.weekendOpen,
+                        weekEndBusinessHour: data.weekendClose,
+                        breakTime: data.breakStart,
+                        endBreakTime: data.breakEnd,
+                        storePhone: data.storePhone,
+                        holidays: data.storeHoliday.map(day => weekdays[day]).filter(day => day),
                         storeImage: data.storeImage || null
                     });
                 }
@@ -256,7 +256,7 @@ const StoreInfo = () => {
                                     className={"select-box"}
                                     name={"businessHour"}
                                     value={formData.businessHour.split(':')[1]}
-                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}:${e.target.value}` } })}
+                                    onChange={(e) => handleChange({ target: { name: 'businessHour', value: `${formData.businessHour.split(':')[0]}${e.target.value}` } })}
                                     disabled={!isEdit}
                                 >
                                     {renderMinuteOption()}
