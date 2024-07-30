@@ -23,7 +23,7 @@ const StoreAccording = ({title,icon,children,isCollapsible, alwaysVisible}) =>{
             <button className={"according-title"} onClick={toggleAction}>
                 <span className={"icon"}>{icon}</span>
                 {title}
-                {alwaysVisible && (
+                {(alwaysVisible && isCollapsible) && (
                     <img
                         src={backIcon}
                         alt={"뒤로 가기"}

@@ -51,8 +51,8 @@ const StoreInfo = () => {
                 if (data) {
                     setFormData({
                         storeName: data.storeName || "",
-                        storeAddress: data.address.split(" ")[0] || "",
-                        detailAddress: data.address.split(" ")[1] || "",
+                        storeAddress: data.address,
+                        detailAddress: data.addressDetail,
                         businessHour: data.weekdayOpen || "",
                         endBusinessHour: data.weekdayClose || "",
                         weekBusinessHour: data.weekendOpen || "",
@@ -92,11 +92,11 @@ const StoreInfo = () => {
     };
 
     const updateStoreInfo = async () => {
-        const address = `${formData.storeAddress} ${formData.detailAddress}`;
         const formDataToSend = new FormData();
         formDataToSend.append("storeNumber", selectedStore);
         formDataToSend.append("storeName", formData.storeName);
-        formDataToSend.append("address", address);
+        formDataToSend.append("address", formData.storeAddress);
+        formDataToSend.append("addressDetail", formData.detailAddress);
         formDataToSend.append("storePhone", formData.storePhone);
         formDataToSend.append("weekdayOpen", formData.businessHour);
         formDataToSend.append("weekdayClose", formData.endBusinessHour);

@@ -87,17 +87,11 @@ const ClosingDiscount = () => {
   };
 
   return (
-      <div className={"store-setting"}>
-        <StoreAccording
-            icon={<img src={icon1} alt={"가게설정"} className={"according-icon"} />}
-            title={"가게 설정"}
-            isCollapsible={false}
-            alwaysVisible={false}
-        />
+      <div className={"store-manage"}>
         <StoreAccording
             icon={<img src={icon2} alt={"할인및위약금관리-마감할인설정"} className={"according-icon"} />}
             title={"할인 및 위약금 관리 - 마감 할인 설정"}
-            isCollapsible
+            isCollapsible={false}
             alwaysVisible
         >
           <form className={"discount-content"}>

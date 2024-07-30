@@ -12,7 +12,7 @@ const Processing = () => {
 
     useEffect(() => {
         const fetchReservations = () => {
-            api.get(`${api.getUri()}/processing`, { params: { storeNumber: selectedStore } })
+            api.get(`/processing`, { params: { storeNumber: selectedStore } })
                 .then(response => {
                     setReservations(response.data);
                 })

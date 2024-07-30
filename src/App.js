@@ -14,6 +14,7 @@ import MenuList from './components/MenuList';
 import ReservationDiscount from './components/ReservationDiscount';
 import UsageTimeDiscount from './components/UsageTimeDiscount';
 import ClosingDiscount from './components/ClosingDiscount';
+import DiscountManagement from "./components/DiscountManagement";
 import MenuListAdd from './components/MenuListAdd';
 import Login from './components/Login';
 import './App.css';
@@ -57,6 +58,7 @@ const AppContent = () => {
                     <Route path="/reservation-discount" element={<ReservationDiscount />} />
                     <Route path="/usage-time-discount" element={<UsageTimeDiscount />} />
                     <Route path="/closing-discount" element={<ClosingDiscount />} />
+                    <Route path={"/discount-manage"} element={<DiscountManagement />}/>
                 </Route>
             </Routes>
         </>

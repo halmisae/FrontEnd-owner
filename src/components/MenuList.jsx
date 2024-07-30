@@ -5,6 +5,9 @@ import icon2 from "../assets/menu-edit.png";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import {useAuth} from "../AuthContext";
+import Card from "react-bootstrap/Card";
+import CardGroup from "react-bootstrap/CardGroup"
+import Button from "react-bootstrap/Button";
 
 const MenuList = () => {
     const [menuList, setMenuList] = useState([]);
@@ -66,18 +69,23 @@ const MenuList = () => {
                 isCollapsible
                 alwaysVisible
             >
-                <div className={"menu-list"}>
+                <CardGroup>
                     {menuList.map(menu => (
-                        <div key={menu.menuNumber} className={"menu-item"}>
-                            <span>{menu.menuName}</span>
-                            <span>{menu.price}원</span>
-                            <span>{menu.introduction}</span>
-                            <span><img src={menu.image} alt={"메뉴사진"} height={60} width={60}/></span>
-                            <button onClick={() => handleEditClick(menu)}>수정</button>
-                            <button onClick={() => handleDeleteClick(menu.menuNumber)}>삭제</button>
-                        </div>
+                        <Card key={menu.menuNumber} style={{width: '18rem', margin: '1rem'}}>
+                            <Card.Img variant="top" src={menu.image} alt="메뉴사진"
+                                      style={{height: '180px', objectFit: 'cover'}}/>
+                            <Card.Body>
+                                <Card.Title>{menu.menuName}</Card.Title>
+                                <Card.Text>{menu.price}원</Card.Text>
+                                <div className="d-flex justify-content-between">
+                                    <Button variant="primary" onClick={() => handleEditClick(menu)}>수정</Button>
+                                    <Button variant="danger"
+                                            onClick={() => handleDeleteClick(menu.menuNumber)}>삭제</Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
                     ))}
-                </div>
+                </CardGroup>
                 <div className={"new-menu"}>
                     <button onClick={handleAddClick}>새 메뉴 추가</button>
                 </div>

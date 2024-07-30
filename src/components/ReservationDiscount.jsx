@@ -59,17 +59,11 @@ const ReservationDiscount = () => {
   };
 
   return (
-      <div className={"store-setting"}>
-        <StoreAccording
-            icon={<img src={icon2} alt={"가게설정"} className={"according-icon"} />}
-            title={"가게 설정"}
-            isCollapsible={false}
-            alwaysVisible={false}
-        />
+      <div className={"store-manage"}>
         <StoreAccording
             icon={<img src={icon1} alt={"할인및위약금관리-예약할인설정"} className={"according-icon"} />}
             title={"할인 및 위약금 관리 - 예약 할인설정"}
-            isCollapsible
+            isCollapsible={false}
             alwaysVisible
         >
           <form>
