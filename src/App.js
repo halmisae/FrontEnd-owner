@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Home from './components/Home';
 import CloseStore from './components/CloseStore';
@@ -18,7 +18,7 @@ import DiscountManagement from "./components/DiscountManagement";
 import MenuListAdd from './components/MenuListAdd';
 import Login from './components/Login';
 import './App.css';
-import { AuthProvider } from './AuthContext';
+import {AuthProvider, useAuth} from './AuthContext';
 import PrivateRoute from './PrivateRoute';
 import ReservationDetail from './components/ReservationDetail';
 import LoadingPage from './components/LoadingPage';
@@ -28,6 +28,7 @@ import {ToastContainer} from "react-toastify";
 const AppContent = () => {
     const [loading, setLoading] = useState(false);
     const location = useLocation();
+    const {isLoggedIn, isOperational} = useAuth();
 
     useEffect(() => {
         const handleStart = () => setLoading(true);
@@ -38,6 +39,14 @@ const AppContent = () => {
 
         return () => clearTimeout(timer);
     }, [location]);
+
+    if (!isLoggedIn) {
+        return <Navigate to={"/"} />
+    }
+
+    if (isLoggedIn && isOperational && location.pathname === "/") {
+        return <Navigate to={"/processing"} />;
+    }
 
     return (
         <>
