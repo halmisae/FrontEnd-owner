@@ -40,10 +40,6 @@ const AppContent = () => {
         return () => clearTimeout(timer);
     }, [location]);
 
-    if (!isLoggedIn) {
-        return <Navigate to={"/"} />
-    }
-
     if (isLoggedIn && isOperational && location.pathname === "/") {
         return <Navigate to={"/processing"} />;
     }

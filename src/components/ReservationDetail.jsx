@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import '../scss/Processing.css';
 import api from "../api";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../AuthContext";
-import {Card, ListGroup} from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const ReservationDetail = () => {
     const [reservations, setReservations] = useState([]);
     const [selectedReservation, setSelectedReservation] = useState(null);
     const location = useLocation();
+    const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 기능을 추가합니다.
     const queryParams = new URLSearchParams(location.search);
     const date = queryParams.get("date");
     const { selectedStore } = useAuth();
@@ -22,7 +23,7 @@ const ReservationDetail = () => {
                     setReservations(response.data);
                 })
                 .catch(error => {
-                    toast.error(`예약 상세정보를 가져오는중 해당하는 오류발생: ${error.message}`);
+                    toast.error(`예약 상세정보를 가져오는 중 해당하는 오류 발생: ${error.message}`);
                 });
         }
     }, [date]);
@@ -49,7 +50,7 @@ const ReservationDetail = () => {
                 setSelectedReservation(null);
             })
             .catch(error => {
-                toast.error(`예약 취소중 해당하는 오류발생: ${error.message}`);
+                toast.error(`예약 취소중 해당하는 오류 발생: ${error.message}`);
             });
     };
 
@@ -73,6 +74,7 @@ const ReservationDetail = () => {
                 </div>
             </div>
             <div className="main">
+                <Button variant="secondary" onClick={() => navigate(-1)}>뒤로 가기</Button> {/* 이전 페이지로 이동하는 버튼 */}
                 {selectedReservation ? (
                     <Card className={"detail-card"}>
                         <Card.Header>예약 {selectedReservation.reserveMenu[0].reserveNumber}번</Card.Header>
