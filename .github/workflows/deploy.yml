@@ -1,58 +1,61 @@
- name: 컨테이너 기반 배포하기
+name: 컨테이너 기반 배포하기
 
- on:
-   push:
-     branches:
-       - main
+on:
+  push:
+    branches:
+      - main
 
- jobs:
-   build-and-deploy:
-     runs-on: ubuntu-latest
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-     steps:
-       - name: Checkout code
-         uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-       - name: Set up Node.js
-         uses: actions/setup-node@v3
-         with:
-           node-version: "18"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-       - name: Install dependencies, build and test
-         run: |
-           npm ci
-           npm run build --if-present
+      - name: Install dependencies, build and test
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test
 
-       - name: Build Docker image
-         run: |
-           docker build -t web-server .
+      - name: Build Docker image
+        run: |
+          docker build -t web-server .
 
-       - name: Configure AWS credentials
-         uses: aws-actions/configure-aws-credentials@v4
-         with:
-           aws-region: ap-northeast-2
-           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-       - name: Log in to AWS ECR
-         id: login-ecr
-         uses: aws-actions/amazon-ecr-login@v2
+      - name: Log in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-       - name: Tag and push Docker image
-         run: |
-           docker tag web-server ${{ steps.login-ecr.outputs.registry }}/web-server:latest
-           docker push ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+      - name: Tag and push Docker image
+        run: |
+          docker tag web-server ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+          docker push ${{ steps.login-ecr.outputs.registry }}/web-server:latest
 
-       - name: Deploy to EC2
-         uses: appleboy/ssh-action@v1.0.3
-         with:
-           host: ${{ secrets.EC2_HOST }}
-           username: ${{ secrets.EC2_USERNAME }}
-           key: ${{ secrets.EC2_PRIVATE_KEY_PEM }}
-           port: ${{ secrets.EC2_PORT }}
-           script_stop: true
-           script: |
-             docker stop web-server || true
-             docker rm web-server || true
-             docker pull ${{ steps.login-ecr.outputs.registry }}/web-server:latest
-             docker run -d --name react-app -p 80:80 ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY_PEM }}
+          port: ${{ secrets.EC2_PORT }}
+          script_stop: true
+          script: |
+            docker stop web-server || true
+            docker rm web-server || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+            docker run -d --name web-server -p 80:80 ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+            env:
+              DOCKER_CLI_EXPERIMENTAL: enabled
