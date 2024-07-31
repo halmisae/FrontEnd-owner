@@ -11,7 +11,7 @@ const ReservationDetail = () => {
     const [reservations, setReservations] = useState([]);
     const [selectedReservation, setSelectedReservation] = useState(null);
     const location = useLocation();
-    const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 기능을 추가합니다.
+    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const date = queryParams.get("date");
     const { selectedStore } = useAuth();
@@ -74,7 +74,7 @@ const ReservationDetail = () => {
                 </div>
             </div>
             <div className="main">
-                <Button variant="secondary" onClick={() => navigate(-1)}>뒤로 가기</Button> {/* 이전 페이지로 이동하는 버튼 */}
+                <Button variant="secondary" onClick={() => navigate(-1)}>뒤로가기</Button>
                 {selectedReservation ? (
                     <Card className={"detail-card"}>
                         <Card.Header>예약 {selectedReservation.reserveMenu[0].reserveNumber}번</Card.Header>
