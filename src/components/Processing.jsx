@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import '../scss/Processing.css';
 import api from "../api";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -150,12 +150,19 @@ const Processing = () => {
         const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
         return today.toDateString() === date.toDateString();
     };
+    const newReservationsCount = useMemo(() => reservations.filter(reservation =>
+        reservation.requestStatus === "NOT_YET" && reservation.doneType !== "OVER_TIME" && reservation.doneType !== "COMPLETE"
+    ).length, [reservations]);
+
+    const ongoingReservationsCount = useMemo(() => reservations.filter(reservation =>
+        reservation.requestStatus === "ACCEPT" && isToday(reservation.orderType === "CLOSING_ORDER" ? reservation.orderDate : reservation.visitTime) && reservation.doneType === "NOT_YET"
+    ).length, [reservations]);
 
     return (
         <div className="processing-container">
             <div className="reservation-bar">
                 <div className="tab">
-                    <h2>신규</h2>
+                    <h2>신규 {newReservationsCount}건</h2>
                     <div className="reservation-list">
                         {reservations.filter(reservation => reservation.requestStatus === "NOT_YET" && reservation.doneType !== "OVER_TIME" && reservation.doneType !== "COMPLETE").map(reservation => (
                             <div
@@ -182,7 +189,7 @@ const Processing = () => {
                     </div>
                 </div>
                 <div className="tab">
-                    <h2>진행중</h2>
+                    <h2>진행중 {ongoingReservationsCount}건</h2>
                     <div className="reservation-list">
                         {reservations.filter(reservation =>
                             reservation.requestStatus === "ACCEPT" && isToday(reservation.orderType === "CLOSING_ORDER" ? reservation.orderDate : reservation.visitTime) && reservation.doneType === "NOT_YET"
