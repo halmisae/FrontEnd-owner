@@ -25,7 +25,7 @@ const ReservationDiscount = () => {
         .catch((error)=>{
           toast.error(`데이터를 가져오는중 해당하는 오류발생: ${error.message}`);
         });
-  }, []);
+  }, [selectedStore]);
   const handleInputChange =(e)=>{
     const value = e.target.value;
     setDiscount(prevState => ({

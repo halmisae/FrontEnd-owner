@@ -26,7 +26,7 @@ const Processing = () => {
         fetchReservations();
         const interval = setInterval(fetchReservations, 3000);
         return () => clearInterval(interval);
-    }, []);
+    }, [selectedStore]);
 
     const handleReservationClick = (reservation) => {
         setSelectedReservation(reservation);

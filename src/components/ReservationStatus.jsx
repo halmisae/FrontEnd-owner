@@ -41,7 +41,7 @@ const ReservationStatus = () => {
                     setEvents(eventData);
                 });
         }
-    }, [selectedStore]);
+    }, [selectedStore,today]);
 
     const handleEventClick = (clickInfo) => {
         const date = clickInfo.event.startStr;
