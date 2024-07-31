@@ -31,7 +31,7 @@ const ClosingDiscount = () => {
         .catch((error)=>{
           toast.error(`데이터를 받아오는중 해당하는 오류발생: ${error.message}`);
         });
-  }, [selectedStore]);
+  }, []);
 
   const handleEditToggle = () => {
     if (isEdit) {

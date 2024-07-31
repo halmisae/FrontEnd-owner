@@ -22,7 +22,7 @@ const MenuList = () => {
             .catch((error) => {
                 toast.error(`데이터를 받아오는중 오류발생: ${error.message}`);
             });
-    }, [selectedStore]);
+    }, []);
 
     const handleEditClick = (menu) => {
                 const menuData = menu

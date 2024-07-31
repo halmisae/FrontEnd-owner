@@ -25,7 +25,7 @@ const ReservationDetail = () => {
                     toast.error(`예약 상세정보를 가져오는중 해당하는 오류발생: ${error.message}`);
                 });
         }
-    }, [selectedStore,date]);
+    }, [date]);
 
     const handleReservationClick = (reservation) => {
         if (reservation.requestStatus !== 'RANDOM_BOX') {
