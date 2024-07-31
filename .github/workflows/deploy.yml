@@ -25,7 +25,7 @@
 
        - name: Build Docker image
          run: |
-           docker build -t react-app .
+           docker build -t web-server .
 
        - name: Configure AWS credentials
          uses: aws-actions/configure-aws-credentials@v4
