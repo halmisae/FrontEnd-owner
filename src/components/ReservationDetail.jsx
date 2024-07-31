@@ -65,7 +65,7 @@ const ReservationDetail = () => {
                             reservations.filter(reservation => reservation.requestStatus === 'ACCEPT').map(reservation => (
                                 <div key={reservation.reserveNumber} className="reservation" onClick={() => handleReservationClick(reservation)}>
                                     <h3>{reservation.reserveNumber}</h3>
-                                    <p>{new Date(reservation.visitTime[0], reservation.visitTime[1] - 1, reservation.visitTime[2], reservation.visitTime[3], reservation.visitTime[4], reservation.visitTime[5]).toLocaleString()}</p>
+                                    <p>{new Date(reservation.visitTime[0], reservation.visitTime[1] - 1, reservation.visitTime[2], reservation.visitTime[3], reservation.visitTime[4]).toLocaleString()}</p>
                                 </div>
                             ))
                         )}
@@ -78,7 +78,7 @@ const ReservationDetail = () => {
                         <Card.Header>예약 {selectedReservation.reserveMenu[0].reserveNumber}번</Card.Header>
                         <Card.Body>
                             <Card.Text>
-                                <p>예약 일시: {new Date(selectedReservation.visitTime[0], selectedReservation.visitTime[1] - 1, selectedReservation.visitTime[2], selectedReservation.visitTime[3], selectedReservation.visitTime[4], selectedReservation.visitTime[5]).toLocaleString()}</p>
+                                <p>예약 일시: {new Date(selectedReservation.visitTime[0], selectedReservation.visitTime[1] - 1, selectedReservation.visitTime[2], selectedReservation.visitTime[3], selectedReservation.visitTime[4]).toLocaleString()}</p>
                                 <p>인원: {selectedReservation.people}</p>
                                 <p>총액: {selectedReservation.totalPrice}원</p>
                                 <p>이용시간: {selectedReservation.useTime}분</p>

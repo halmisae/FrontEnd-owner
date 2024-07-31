@@ -122,14 +122,13 @@ const SalesInquiry = () => {
     return (
         <div className={"sale-container"}>
             <div className={"sale-history-div"}>
-                <h3>주문기록</h3>
-                <label>
+                <label className={"sales-month"}>
                     <select value={selectedMonth} onChange={handleMonthChange}>
                         {Array.from({length: 12}, (_, i) => (
                             <option key={i + 1} value={i + 1}>{i + 1}</option>
                         ))}
                     </select>
-                    월
+                    월별 매출기록
                 </label>
                 <ul className={"sale-history"}>
                     {monthlyOrders.map((order) => (

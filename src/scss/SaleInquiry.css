@@ -15,6 +15,10 @@
     width: 700px;
 }
 
+.sales-month {
+    font-size: 30px;
+}
+
 .sale-history {
     height: 80vh;
     overflow-y: auto;
