@@ -6,6 +6,7 @@ import StoreAccording from "./StoreAccording";
 import "../scss/MenuListAdd.css";
 import { useAuth } from "../AuthContext";
 import api3 from "../api3";
+import {toast} from "react-toastify";
 
 const MenuListAdd = () => {
     const location = useLocation();
@@ -53,7 +54,7 @@ const MenuListAdd = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (introduction.length < 10 || introduction.length > 100) {
-            alert("메뉴 설명은 10자 이상 100자 이하만 가능합니다");
+            toast.error("메뉴 설명은 10자 이상 100자 이하만 가능합니다");
             return;
         }
 
@@ -74,8 +75,7 @@ const MenuListAdd = () => {
                 navigate("/menu-list");
             })
             .catch((error) => {
-                console.error("Error submitting form: ", error);
-                alert("제출 중에 오류가 발생했습니다.");
+                toast.error(`메뉴 등록중 오류발생: ${error.message}`);
             });
     };
 

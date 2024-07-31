@@ -5,6 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import "../scss/ReservationStatus.css";
 import api from "../api";
 import { useAuth } from "../AuthContext";
+import {toast} from "react-toastify";
 
 const formatToLocalDateTime = (date) => {
     const dateObj = new Date(date);
@@ -16,7 +17,7 @@ const fetchReservationData = (storeNumber, today) => {
     return api.get(requestUrl)
         .then(response => response.data)
         .catch(error => {
-            console.error("Error fetching Data: ", error);
+            toast.error(`데이터를 가져오는중 해당하는 오류발생: ${error.message}`);
             return [];
         });
 };

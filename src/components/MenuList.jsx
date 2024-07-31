@@ -8,6 +8,7 @@ import {useAuth} from "../AuthContext";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup"
 import Button from "react-bootstrap/Button";
+import {toast} from "react-toastify";
 
 const MenuList = () => {
     const [menuList, setMenuList] = useState([]);
@@ -19,7 +20,7 @@ const MenuList = () => {
                 setMenuList(response.data);
             })
             .catch((error) => {
-                console.error("Error fetching data: ", error);
+                toast.error(`데이터를 받아오는중 오류발생: ${error.message}`);
             });
     }, []);
 
@@ -50,8 +51,7 @@ const MenuList = () => {
                 }
             })
             .catch((error) => {
-                console.error("Error deleting menu: ", error);
-                alert("삭제 중에 오류가 발생했습니다.");
+                toast.error(`메뉴 삭제중 오류발생: ${error.message}`);
             });
     };
 

@@ -20,7 +20,7 @@ const Login = () => {
                 setStores(response.data);
             })
             .catch(error => {
-                toast.error(error.message);
+                toast.error(`로그인 정보를 가져오는중 오류발생: ${error.message}`);
             });
     }, []);
 

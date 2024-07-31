@@ -7,6 +7,7 @@ import "../scss/SaleInquiry.css";
 import api from "../api";
 import { ToggleButton,Card } from "react-bootstrap";
 import { useAuth } from "../AuthContext";
+import {toast} from "react-toastify";
 
 const fetchData = (storeNumber, year, month) => {
     const formattedDate = new Date(year, month, 1).toISOString();
@@ -17,7 +18,7 @@ const fetchData = (storeNumber, year, month) => {
             return response.data;
         })
         .catch(error => {
-            console.error("Error fetching sales data: ", error);
+            toast.error(`매출기록 데이터를 가져오는중 해당하는 오류발생: ${error.message}`);
             return [];
         });
 };

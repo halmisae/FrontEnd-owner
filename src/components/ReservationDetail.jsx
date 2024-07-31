@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from "../AuthContext";
 import {Card, ListGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import {toast} from "react-toastify";
 
 const ReservationDetail = () => {
     const [reservations, setReservations] = useState([]);
@@ -19,10 +20,9 @@ const ReservationDetail = () => {
             api.get(`${api.getUri()}/schedule/daily?storeNumber=${selectedStore}&date=${encodeURIComponent(date)}`)
                 .then(response => {
                     setReservations(response.data);
-                    console.log(response.data)
                 })
                 .catch(error => {
-                    console.error("Error fetching reservation: ", error);
+                    toast.error(`예약 상세정보를 가져오는중 해당하는 오류발생: ${error.message}`);
                 });
         }
     }, [date]);
@@ -49,7 +49,7 @@ const ReservationDetail = () => {
                 setSelectedReservation(null);
             })
             .catch(error => {
-                console.error("예약 취소중 에러 발생", error);
+                toast.error(`예약 취소중 해당하는 오류발생: ${error.message}`);
             });
     };
 

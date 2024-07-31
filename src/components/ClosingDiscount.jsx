@@ -4,6 +4,7 @@ import icon2 from "../assets/storesale-edit.png";
 import "../scss/UsageTimeDiscount.css";
 import api from "../api";
 import {useAuth} from "../AuthContext";
+import {toast} from "react-toastify";
 
 const ClosingDiscount = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const ClosingDiscount = () => {
           });
         })
         .catch((error)=>{
-          console.error("Error fetching data: ",error);
+          toast.error(`데이터를 받아오는중 해당하는 오류발생: ${error.message}`);
         });
   }, []);
 
@@ -57,7 +58,7 @@ const ClosingDiscount = () => {
           setEdit(false);
         })
         .catch((error) => {
-          console.error('Error:', error);
+          toast.error(`입력한 설정 저장중 오류발생: ${error.message}`);
         });
   };
 

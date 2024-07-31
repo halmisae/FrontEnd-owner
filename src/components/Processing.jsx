@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from "react-bootstrap/Button";
 import {useAuth} from "../AuthContext";
 import {Card, ListGroup} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 const Processing = () => {
     const [reservations, setReservations] = useState([]);
@@ -18,7 +19,7 @@ const Processing = () => {
                     setReservations(response.data);
                 })
                 .catch(error => {
-                    console.error('Error fetching reservations:', error);
+                    toast.error(`데이터를 가져오는중 오류발생: ${error.message}`);
                 });
         };
 
@@ -50,9 +51,18 @@ const Processing = () => {
                         : res
                 ));
                 setSelectedReservation(null);
+
+                const orderType = reservations.find(res =>
+                    (res.orderType === "CLOSING_ORDER" ? res.orderNumber : res.reserveNumber) === id
+                )?.orderType;
+                if (orderType === "CLOSING_ORDER"){
+                    toast.success(`마감할인 ${id}번을 수락 하였습니다.`)
+                }else {
+                    toast.success(`방문예약 ${id}번을 수락하였습니다.`)
+                }
             })
             .catch(error => {
-                console.error('Error accepting reservation:', error);
+                toast.error(`예약 및 주문 수락중 해당하는 오류발생: ${error.message}`);
             });
     };
 
@@ -75,7 +85,7 @@ const Processing = () => {
                 setSelectedReservation(null);
             })
             .catch(error => {
-                console.error('Error rejecting reservation:', error);
+                toast.error(`예약 및 주문 거절중 해당하는 오류발생: ${error.message}`);
             });
     };
 
@@ -97,10 +107,10 @@ const Processing = () => {
                     ? {...res, doneType: "COMPLETE"} : res
                 ));
                 setSelectedReservation(null);
-                console.log('Reservation completed:', response);
+                toast.success(``)
             })
             .catch(error => {
-                console.error('Error completing reservation:', error);
+                toast.error(`완료 처리중 해당하는 오류발생: ${error.message}`);
             });
     };
 
@@ -122,10 +132,10 @@ const Processing = () => {
                     ? {...res, doneType: "NO_SHOW"} : res
                 ));
                 setSelectedReservation(null);
-                console.log('Reservation marked as no-show:', response);
+                toast.success(`주문번호${id}를 노쇼처리 하였습니다.`)
             })
             .catch(error => {
-                console.error('Error marking reservation as no-show:', error);
+                toast.error(`노쇼 처리중 해당하는 오류발생: ${error.message}`);
             });
     };
 

@@ -4,6 +4,7 @@ import icon2 from "../assets/storesale-edit.png";
 import "../scss/UsageTimeDiscount.css";
 import api from "../api";
 import {useAuth} from "../AuthContext";
+import {toast} from "react-toastify";
 
 const UsageTimeDiscount = () => {
     const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const UsageTimeDiscount = () => {
                 });
             })
             .catch((error) => {
-                console.error("Error fetching data: ", error);
+                toast.error(`데이터를 가져오는중 해당하는 오류발생: ${error.message}`);
             });
     }, []);
 
@@ -51,11 +52,10 @@ const UsageTimeDiscount = () => {
         api
             .post("/unitTimeDiscount", formData)
             .then((response) => {
-                alert("설정이 성공적으로 완료되었습니다.");
+                toast.success("설정 저장완료");
             })
             .catch((error) => {
-                console.error("Error submitting data: ", error);
-                alert("설정 중 오류가 발생했습니다.");
+                toast.error(`입력한 설정 저장중 해당하는 오류발생: ${error.message}`);
             });
     };
 

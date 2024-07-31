@@ -3,6 +3,7 @@ import StoreAccording from "./StoreAccording";
 import icon1 from "../assets/storesale-edit.png";
 import api from "../api";
 import {useAuth} from "../AuthContext";
+import {toast} from "react-toastify";
 
 const ReservationDiscount = () => {
   const [discount, setDiscount] = useState({
@@ -22,7 +23,7 @@ const ReservationDiscount = () => {
           });
         })
         .catch((error)=>{
-          console.error("Error fetching data: ",error);
+          toast.error(`데이터를 가져오는중 해당하는 오류발생: ${error.message}`);
         });
   }, []);
   const handleInputChange =(e)=>{
@@ -49,10 +50,9 @@ const ReservationDiscount = () => {
             .then((response)=>{
               setEdit(false);
             })
-        alert("할인 금액이 설정되었습니다");
+        toast.success("할인 금액을 설정완료 하였습니다.");
       } catch (error){
-        console.error("Error submitting discount: ",error);
-        alert("할인 금액 설정 중 오류가 발생했습니다.");
+        toast.error(`할인 금액 설정중 해당하는 오류발생: ${error.message}`);
       }
     }
   };

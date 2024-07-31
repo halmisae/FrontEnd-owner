@@ -10,6 +10,7 @@ import { useAuth } from "../AuthContext";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
+import {toast} from "react-toastify";
 
 const weekdays = {
     "월요일": "MON",
@@ -65,7 +66,7 @@ const StoreInfo = () => {
                     });
                 }
             } catch (error) {
-                console.error("가게정보 로드중 에러 발생: ", error);
+                toast.error(`가게정보 데이터 불러오는중 해당하는 오류발생: ${error.message}`);
             }
         };
 
@@ -117,7 +118,7 @@ const StoreInfo = () => {
             });
             navigate("/store-info");
         } catch (error) {
-            console.error("가게정보 업로드중 에러 발생: ", error);
+            toast.error(`수정된 가게정보 저장중 해당하는 오류발생: ${error.message}`);
         }
     };
 
