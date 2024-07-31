@@ -40,8 +40,8 @@
 
        - name: Tag and push Docker image
          run: |
-           docker tag react-app ${{ steps.login-ecr.outputs.registry }}/react-app:latest
-           docker push ${{ steps.login-ecr.outputs.registry }}/react-app:latest
+           docker tag web-server ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+           docker push ${{ steps.login-ecr.outputs.registry }}/web-server:latest
 
        - name: Deploy to EC2
          uses: appleboy/ssh-action@v1.0.3
@@ -52,7 +52,7 @@
            port: ${{ secrets.EC2_PORT }}
            script_stop: true
            script: |
-             docker stop react-app || true
-             docker rm react-app || true
-             docker pull ${{ steps.login-ecr.outputs.registry }}/react-app:latest
-             docker run -d --name react-app -p 80:80 ${{ steps.login-ecr.outputs.registry }}/react-app:latest
+             docker stop web-server || true
+             docker rm web-server || true
+             docker pull ${{ steps.login-ecr.outputs.registry }}/web-server:latest
+             docker run -d --name react-app -p 80:80 ${{ steps.login-ecr.outputs.registry }}/web-server:latest
