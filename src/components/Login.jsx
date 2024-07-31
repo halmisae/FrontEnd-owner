@@ -3,6 +3,8 @@ import { useAuth } from "../AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../scss/Login.css";
 import api2 from "../api2";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 const Login = () => {
     const [stores, setStores] = useState([]);
@@ -18,14 +20,15 @@ const Login = () => {
                 setStores(response.data);
             })
             .catch(error => {
-                console.error('Error fetching stores:', error);
+                toast.error(error.message);
             });
     }, []);
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!selectedStore) {
-            alert("가게를 선택해주세요.");
+            toast.warn("가게를 선택해주세요.");
             return;
         }
         login(selectedStore);

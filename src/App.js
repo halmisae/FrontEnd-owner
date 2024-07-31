@@ -23,6 +23,7 @@ import PrivateRoute from './PrivateRoute';
 import ReservationDetail from './components/ReservationDetail';
 import LoadingPage from './components/LoadingPage';
 import { ReservationProvider } from './ReservationContext';
+import {ToastContainer} from "react-toastify";
 
 const AppContent = () => {
     const [loading, setLoading] = useState(false);
@@ -81,6 +82,7 @@ const App = () => {
                     </div>
                 </BrowserRouter>
             </ReservationProvider>
+            <ToastContainer />
         </AuthProvider>
     );
 };
